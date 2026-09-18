@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login / Register</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+:root{
+--primary:#0d6efd;
+--primary-dark:#6610f2;
+--bg:#090b12;
+--panel:rgba(255,255,255,0.12);
+--panel-border:rgba(255,255,255,0.18);
+--text:#e9ecef;
+--muted:rgba(233,236,239,0.75);
+}
+
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+min-height:100vh;
+font-family:system-ui;
+background:radial-gradient(circle at top, rgba(13,110,253,0.55), transparent 55%),
+linear-gradient(180deg,#050711 0%,#070b15 100%);
+color:var(text);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:32px 16px;
+}
+
+.card{
+width:min(520px,100%);
+background:var(panel);
+border:1px solid var(panel-border);
+border-radius:18px;
+padding:32px 28px;
+box-shadow:0 18px 48px rgba(0,0,0,0.45);
+backdrop-filter:blur(14px);
+}
+
+.card h1{
+margin:0 0 10px;
+font-size:1.85rem;
+}
+
+.subtitle{
+margin:0 0 26px;
+color:var(muted);
+}
+
+.sections{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:24px;
+margin-bottom:24px;
+}
+
+.panel{
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.18);
+border-radius:18px;
+padding:22px;
+}
+
+.panel h2{
+margin:0 0 10px;
+font-size:1.25rem;
+}
+
+.section-subtitle{
+margin:0 0 18px;
+color:var(muted);
+font-size:0.95rem;
+}
+
+form{
+display:grid;
+gap:16px;
+}
+
+label{
+display:grid;
+gap:8px;
+font-size:0.92rem;
+color:var(muted);
+}
+
+input{
+width:100%;
+padding:11px 14px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.18);
+background:rgba(255,255,255,0.08);
+color:var(text);
+font-size:0.98rem;
+}
+
+input:focus{
+outline:none;
+box-shadow:0 0 0 3px rgba(13,110,253,0.35);
+border-color:rgba(13,110,253,0.6);
+}
+
+.form-actions{
+display:flex;
+flex-wrap:wrap;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.btn{
+border:none;
+border-radius:999px;
+padding:12px 18px;
+font-size:1rem;
+font-weight:700;
+cursor:pointer;
+}
+
+.btn.primary{
+background:linear-gradient(135deg,var(primary),var(primary-dark));
+color:white;
+}
+
+.btn.secondary{
+background:rgba(255,255,255,0.1);
+color:var(text);
+border:1px solid rgba(255,255,255,0.22);
+}
+
+.footer{
+margin-top:22px;
+font-size:0.85rem;
+color:rgba(233,236,239,0.65);
+text-align:center;
+}
+
+.footer a{
+color:rgba(13,110,253,0.9);
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>Admin Portal</h1>
+<p class="subtitle">Login to manage exams or register as administrator.</p>
+
+<div class="sections">
+
+<!-- LOGIN PANEL -->
+<section class="panel" id="existing">
+
+<h2>Existing Admin</h2>
+<p class="section-subtitle">Login to access the admin dashboard.</p>
+
+<form  action="AdminLoginServlet" method="post">
+
+<label>
+Admin Email
+<input type="email"  name="email" required placeholder="admin@example.com">
+</label>
+<label>
+Password
+<input type="password"  name="password" required placeholder="••••••••">
+</label>
+
+<div class="form-actions">
+<button class="btn primary" type="submit">Login</button>
+
+</div>
+
+</form>
+</section>
+
+
+
+<p class="subtitle"><a class="btn secondary" href="start.html"> Go Back </a></p>
+
+</form>
+
+</section>
+
+</div>
+
+<p class="footer">
+Need help?
+<a href="#" onclick="alert('Contact system administrator'); return false;">Contact support</a>
+</p>
+
+</div>
+
+<script>
+
+document.getElementById('switchToRegister').onclick=()=>{
+document.getElementById('new').scrollIntoView({behavior:'smooth'});
+}
+
+document.getElementById('switchToLogin').onclick=()=>{
+document.getElementById('existing').scrollIntoView({behavior:'smooth'});
+}
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SmartExam</title>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+    position: relative;
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+}
+
+.page-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+        url("https://examonline.in/wp-content/uploads/2023/08/featured1-1536x934.png") no-repeat center/cover;
+    background-attachment: fixed;
+}
+
+/* Header */
+.header{
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    color: #f8f9fa;
+    padding: 24px 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.header h1{
+    margin:0;
+    font-size:42px;
+    letter-spacing: 0.5px;
+}
+
+.header p{
+    margin:6px;
+    font-size:18px;
+    opacity: 0.92;
+}
+
+/* Main container */
+.container{
+    margin-top:90px;
+}
+
+/* Buttons */
+.b1{
+    display:inline-block;
+    padding:15px 32px;
+    margin:10px;
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    color:white;
+    text-decoration:none;
+    border-radius:12px;
+    font-size:18px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.b1:hover{
+    background: linear-gradient(135deg, #6610f2 0%, #0d6efd 100%);
+    transform: translateY(-2px);
+    box-shadow:0 18px 28px rgba(0,0,0,0.28);
+}
+
+/* About Section */
+.about{
+    margin:120px auto 80px;
+    max-width:900px;
+    background: rgba(255,255,255,0.92);
+    color: #111;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px);
+    text-align: left;
+}
+
+.about h2{
+    margin-bottom:20px;
+    color: #0b2f5a;
+}
+
+.about .about-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+}
+
+.about .about-text,
+.about .about-features,
+.about .about-illustration{
+    flex: 1 1 320px;
+}
+
+.about .about-illustration img{
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+    object-fit: cover;
+    max-height: 420px;
+}
+
+.about p{
+    margin:0 0 18px;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.about ul{
+    margin:0;
+    font-size:16px;
+    line-height:1.6;
+    padding-left: 1.2rem;
+}
+
+</style>
+    <link rel="stylesheet" href="theme.css" />
+    <script src="theme.js" defer></script>
+
+</head>
+
+<body>
+
+<!-- Full-page background image -->
+<div class="page-bg" aria-hidden="true"></div>
+
+<!-- Project Title -->
+<div class="header">
+<h1>SmartExam</h1>
+<p>Online Examination Portal</p>
+</div>
+
+<div class="container">
+
+<h2>Select Login Type</h2>
+
+<!-- Student Button -->
+<a href="student.html" class="b1">
+<i class="fa-solid fa-user"></i> Student
+</a>
+
+<!-- Admin Button -->
+<a href="admin.html" class="b1">
+<i class="fa-solid fa-user-tie"></i> Admin
+</a>
+
+</div>
+
+<!-- About Section -->
+<div class="about">
+<h2>About SmartExam</h2>
+<div class="about-grid">
+    <div class="about-text">
+        <p>
+        SmartExam is a secure, reliable online examination platform built to support
+        modern education workflows. It enables institutions to define, schedule, and
+        deliver assessments while maintaining a structured and consistent user experience.
+        </p>
+        <p>
+        With built-in monitoring, automated grading, and detailed performance reports,
+        SmartExam helps educators reduce administrative overhead and focus on student success.
+        </p>
+    </div>
+    <div class="about-illustration">
+        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80" alt="Student taking an online exam">
+    </div>
+    <div class="about-features">
+        <h3>Key features</h3>
+        <ul>
+            <li>Role-based access for students and administrators</li>
+            <li>Timed exams with secure access controls</li>
+            <li>Automated scoring and exportable insights</li>
+            <li>Responsive UI optimized for all devices</li>
+        </ul>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

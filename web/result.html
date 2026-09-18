@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: rgba(255, 255, 255, 0.08);
+            --panel-border: rgba(255, 255, 255, 0.16);
+            --text: #ebf2ff;
+            --muted: rgba(235, 242, 255, 0.7);
+            --primary: #0d6efd;
+            --primary-2: #6610f2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
+                linear-gradient(180deg, #081427 0%, #060a11 100%);
+            color: var(--text);
+        }
+
+        header {
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            background: rgba(7, 11, 23, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text);
+        }
+
+        main {
+            padding: 32px 24px;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 2.1rem;
+        }
+
+        .subtitle {
+            margin: 10px 0 24px;
+            color: var(--muted);
+            max-width: 620px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 26px;
+        }
+
+        .stat {
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(14px);
+        }
+
+        .stat h3 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+            color: var(--muted);
+        }
+
+        .stat p {
+            margin: 0;
+            font-size: 2.3rem;
+            font-weight: 700;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 18px;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 760px;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            font-weight: 700;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+        }
+
+        td {
+            color: rgba(235, 242, 255, 0.88);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .badge.pass {
+            color: #00c376;
+            background: rgba(0, 195, 118, 0.18);
+        }
+
+        .badge.fail {
+            color: #ff6767;
+            background: rgba(255, 103, 103, 0.15);
+        }
+
+        .actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .actions a:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        @media (max-width: 780px) {
+            .table-wrap {
+                min-width: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../common/theme.css" />
+    <script src="../common/theme.js" defer></script>
+</head>
+<body>
+
+<header>
+    <a href="studenthome.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to dashboard</a>
+    <div class="brand">Results</div>
+</header>
+
+<main>
+    <div class="page-title">
+        <div>
+            <h1>Latest Results</h1>
+            <p class="subtitle">Review your most recent test scores and track your overall performance.</p>
+        </div>
+        <div class="actions">
+            <a href="#"><i class="fa-solid fa-rotate"></i> Refresh</a>
+            <a href="#"><i class="fa-solid fa-download"></i> Download report</a>
+        </div>
+    </div>
+
+    <section class="summary">
+        <div class="stat">
+            <h3>Average Score</h3>
+            <p>88%</p>
+        </div>
+        <div class="stat">
+            <h3>Tests Completed</h3>
+            <p>12</p>
+        </div>
+        <div class="stat">
+            <h3>Best Score</h3>
+            <p>98%</p>
+        </div>
+        <div class="stat">
+            <h3>Last Taken</h3>
+            <p>Mar 10, 2026</p>
+        </div>
+    </section>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Status</th>
+                    <th>Time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mar 10, 2026</td>
+                    <td>Mathematics</td>
+                    <td>85%</td>
+                    <td><span class="badge pass"><i class="fa-solid fa-check"></i> Pass</span></td>
+                    <td>45m</td>
+                    <td><a href="#"><i class="fa-solid fa-eye"></i> View</a></td>
+                </tr>
+                <tr>
+                    <td>Mar 5, 2026</td>
+                    <td>Physics</td>
+                    <td>78%</td>
+                    <td><span class="badge pass"><i class="fa-solid fa-check"></i> Pass</span></td>
+                    <td>50m</td>
+                    <td><a href="#"><i class="fa-solid fa-eye"></i> View</a></td>
+                </tr>
+                <tr>
+                    <td>Feb 26, 2026</td>
+                    <td>Chemistry</td>
+                    <td>65%</td>
+                    <td><span class="badge pass"><i class="fa-solid fa-check"></i> Pass</span></td>
+                    <td>42m</td>
+                    <td><a href="#"><i class="fa-solid fa-eye"></i> View</a></td>
+                </tr>
+                <tr>
+                    <td>Feb 20, 2026</td>
+                    <td>Biology</td>
+                    <td>59%</td>
+                    <td><span class="badge fail"><i class="fa-solid fa-xmark"></i> Fail</span></td>
+                    <td>38m</td>
+                    <td><a href="#"><i class="fa-solid fa-eye"></i> View</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

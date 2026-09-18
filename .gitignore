@@ -1,0 +1,10 @@
+/build/
+/dist/
+/nbbuild/
+/nbdist/
+*.class
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

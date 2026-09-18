@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --bg:#0b1220;
+  --text:#ebf2ff;
+  --muted:rgba(235,242,255,0.7);
+  --primary:#0d6efd;
+}
+
+body{
+  margin:0;
+  background:#081427;
+  color:var(--text);
+  font-family:sans-serif;
+}
+
+header{
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+}
+
+main{
+  padding:20px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px;
+}
+
+.rank.gold{color:gold;}
+.rank.silver{color:silver;}
+.rank.bronze{color:orange;}
+
+.progress{
+  height:8px;
+  background:#333;
+  border-radius:10px;
+}
+
+.progress-inner{
+  height:100%;
+  background:linear-gradient(45deg,#0d6efd,#6610f2);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Leaderboard</h2>
+</header>
+
+<main>
+
+<select id="testSelect"></select>
+
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Student</th>
+<th>Score</th>
+<th>Progress</th>
+</tr>
+</thead>
+
+<tbody id="leaderboardBody"></tbody>
+</table>
+
+</main>
+
+<script>
+
+// ✅ Current student (normalized)
+const currentStudent = (localStorage.getItem('smartexam_studentName') || 'Student')
+  .trim()
+  .toLowerCase();
+
+// ✅ Load Data
+function loadTests(){
+  return JSON.parse(localStorage.getItem('smartexam_tests') || '[]');
+}
+
+function loadResults(){
+  return JSON.parse(localStorage.getItem('smartexam_results') || '[]');
+}
+
+// ✅ Get leaderboard data
+function getResultsForTest(testId){
+
+  const results = loadResults().filter(r => r.testId === testId);
+
+  const leaderboard = {};
+
+  results.forEach(r => {
+    const name = r.student.trim().toLowerCase();
+
+    if(!leaderboard[name] || leaderboard[name] < r.score){
+      leaderboard[name] = r.score;
+    }
+  });
+
+  return Object.entries(leaderboard)
+    .map(([student, score]) => ({student, score}))
+    .sort((a,b)=>b.score-a.score);
+}
+
+// ✅ Render leaderboard
+function renderLeaderboard(testId){
+
+  const data = getResultsForTest(testId);
+  const tbody = document.getElementById('leaderboardBody');
+
+  tbody.innerHTML = '';
+
+  if(!data.length){
+    tbody.innerHTML = `<tr><td colspan="4">No Data</td></tr>`;
+    return;
+  }
+
+  data.slice(0,5).forEach((entry, idx)=>{
+
+    let medal = 'normal';
+    if(idx===0) medal='gold';
+    else if(idx===1) medal='silver';
+    else if(idx===2) medal='bronze';
+
+    // ✅ Highlight fix
+    const highlight = entry.student === currentStudent
+      ? 'background:rgba(13,110,253,0.2); font-weight:bold;'
+      : '';
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('style', highlight);
+
+    tr.innerHTML = `
+      <td class="rank ${medal}">${idx+1}</td>
+      <td>${entry.student}</td>
+      <td>${entry.score}%</td>
+      <td>
+        <div class="progress">
+          <div class="progress-inner" style="width:${entry.score}%"></div>
+        </div>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+}
+
+// ✅ Init test select
+function init(){
+
+  const select = document.getElementById('testSelect');
+  const tests = loadTests();
+
+  if(!tests.length){
+    select.innerHTML = `<option>No Tests</option>`;
+    return;
+  }
+
+  select.innerHTML = tests.map(t =>
+    `<option value="${t.id}">${t.name}</option>`
+  ).join('');
+
+  renderLeaderboard(Number(select.value));
+
+  select.addEventListener('change',()=>{
+    renderLeaderboard(Number(select.value));
+  });
+}
+
+init();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take Test</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: rgba(255, 255, 255, 0.08);
+            --panel-border: rgba(255, 255, 255, 0.16);
+            --text: #ebf2ff;
+            --muted: rgba(235, 242, 255, 0.7);
+            --primary: #0d6efd;
+            --primary-2: #6610f2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
+                linear-gradient(180deg, #081427 0%, #060a11 100%);
+            color: var(--text);
+        }
+
+        header {
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            background: rgba(7, 11, 23, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text);
+        }
+
+        main {
+            padding: 32px 24px;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 2.1rem;
+        }
+
+        .subtitle {
+            margin: 10px 0 24px;
+            color: var(--muted);
+            max-width: 620px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32);
+            backdrop-filter: blur(14px);
+            margin-top: 32px;
+        }
+
+        .test-card {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 18px;
+            margin-bottom: 18px;
+        }
+        
+        .test-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: white;
+            box-shadow: 0 14px 30px rgba(9, 101, 212, 0.35);
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px rgba(9, 101, 212, 0.4);
+        }
+
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .question {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 18px;
+        }
+
+        .choices {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+        }
+
+        .result {
+            text-align: center;
+        }
+
+        .result .score {
+            font-size: 3rem;
+            margin: 16px 0;
+        }
+
+        .empty-state {
+            padding: 48px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="studenthome.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to dashboard</a>
+    <div class="brand">Take a Test</div>
+</header>
+
+<main>
+    <div class="page-title">
+        <div>
+            <h1>Choose an exam</h1>
+            <p class="subtitle">Select a test uploaded by your teacher, answer the questions, and see your results instantly.</p>
+        </div>
+    </div>
+
+    <div id="mainContent"></div>
+</main>
+
+<script>
+    // ================= SECURITY FEATURES LOGIC =================
+    let tabSwitchCount = 0;
+    let examSubmitted = true; // Default true so security doesn't trip on the dashboard
+
+    function startSecurity() {
+        tabSwitchCount = 0;
+        examSubmitted = false;
+        enterFullScreen();
+    }
+
+    function enterFullScreen() {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log("Fullscreen request failed", err);
+            });
+        }
+    }
+
+    function autoSubmitExam() {
+        if (examSubmitted) return;
+        const form = document.getElementById("takeTestForm");
+        if (form) {
+            // We trigger a click on the submit button so the existing form logic handles the save
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if(submitBtn) submitBtn.click();
+        }
+    }
+
+    // Tab switching detection
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden && !examSubmitted && document.getElementById("takeTestForm")) {
+            tabSwitchCount++;
+            if (tabSwitchCount >= 3) {
+                alert("Multiple tab switching detected. Exam will be submitted.");
+                autoSubmitExam();
+            } else {
+                alert("Warning " + tabSwitchCount + "/3: Do not switch tabs!");
+            }
+        }
+    });
+
+    // Fullscreen exit detection
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement && !examSubmitted && document.getElementById("takeTestForm")) {
+            alert("You exited fullscreen. Exam will be submitted.");
+            autoSubmitExam();
+        }
+    });
+
+    // Disable interactions
+    document.addEventListener("copy", e => { if(!examSubmitted) e.preventDefault(); });
+    document.addEventListener("paste", e => { if(!examSubmitted) e.preventDefault(); });
+    document.addEventListener("cut", e => { if(!examSubmitted) e.preventDefault(); });
+    document.addEventListener("contextmenu", e => { if(!examSubmitted) e.preventDefault(); });
+
+    document.addEventListener("keydown", function (e) {
+        if (examSubmitted) return;
+        if (
+            (e.ctrlKey && (e.key === "c" || e.key === "v" || e.key === "x" || e.key === "t")) ||
+            e.key === "F12"
+        ) {
+            e.preventDefault();
+        }
+    });
+
+    // ================= CORE APP LOGIC =================
+    const mainContent = document.getElementById('mainContent');
+
+    function getStudentName() {
+        const saved = localStorage.getItem('smartexam_studentName');
+        if (saved) return saved;
+
+        const name = prompt('Enter your name (this is used to save your test results):', 'Student');
+        if (name && name.trim()) {
+            localStorage.setItem('smartexam_studentName', name.trim());
+            return name.trim();
+        }
+        return 'Student';
+    }
+
+    const studentName = getStudentName();
+
+    function loadTests() {
+        return JSON.parse(localStorage.getItem('smartexam_tests') || '[]');
+    }
+
+    function renderTestList() {
+        examSubmitted = true; // Ensure security is off while browsing list
+        const tests = loadTests();
+
+        if (!tests.length) {
+            mainContent.innerHTML = `
+                <div class="card empty-state">
+                    <h2>No tests available</h2>
+                    <p>Ask your teacher to create a test first.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const listContainer = document.createElement('div');
+        listContainer.className = 'card';
+        listContainer.innerHTML = tests.map(test => `
+            <div class="test-card">
+                <div>
+                    <h3>${test.name}</h3>
+                    <p class="subtitle">${test.subject} · ${test.questions.length} questions · ${test.timeLimit} min</p>
+                </div>
+                <button class="btn primary" data-test-id="${test.id}">Take test</button>
+            </div>
+        `).join('');
+
+        mainContent.innerHTML = '';
+        mainContent.appendChild(listContainer);
+
+        listContainer.querySelectorAll('button[data-test-id]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = Number(btn.dataset.testId);
+                const test = tests.find(t => t.id === id);
+                if (test) {
+                    startSecurity(); // ACTIVATE SECURITY
+                    renderTest(test);
+                }
+            });
+        });
+    }
+
+    function renderTest(test) {
+        const totalMarks = test.questions.reduce((sum, q) => sum + (q.marks || 1), 0);
+        let startTime = Date.now();
+
+        mainContent.innerHTML = `
+            <div class="card">
+                <div class="page-title">
+                    <div>
+                        <h1>${test.name}</h1>
+                        <p class="subtitle">${test.subject} · ${test.questions.length} questions</p>
+                    </div>
+                    <button class="btn secondary" id="backToList"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                </div>
+
+                <form id="takeTestForm">
+                    ${test.questions.map((q, idx) => `
+                        <section class="question">
+                            <h3>Q${idx + 1}. ${q.questionText}</h3>
+                            <div class="choices">
+                                ${q.choices.map((choice, ci) => `
+                                    <label>
+                                        <input type="radio" name="q_${idx}" value="${String.fromCharCode(65 + ci)}" required />
+                                        <span>${choice}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </section>
+                    `).join('')}
+
+                    <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
+                        <button type="button" class="btn secondary" id="cancelTest">Cancel</button>
+                        <button type="submit" class="btn primary">Submit answers</button>
+                    </div>
+                </form>
+            </div>
+        `;
+
+        document.getElementById('backToList').addEventListener('click', renderTestList);
+        document.getElementById('cancelTest').addEventListener('click', renderTestList);
+
+        document.getElementById('takeTestForm').addEventListener('submit', event => {
+            event.preventDefault();
+            
+            examSubmitted = true; // Turn off security
+            if (document.fullscreenElement) document.exitFullscreen();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            let score = 0;
+            const answers = [];
+            test.questions.forEach((q, idx) => {
+                const answer = formData.get(`q_${idx}`);
+                answers.push({ questionId: q.id, answer });
+                if (answer === q.correct) {
+                    score += Number(q.marks || 1);
+                }
+            });
+
+            const result = {
+                id: Date.now(),
+                student: studentName,
+                testId: test.id,
+                testName: test.name,
+                subject: test.subject,
+                date: new Date().toISOString(),
+                durationMinutes: Math.round((Date.now() - startTime) / 60000),
+                score,
+                totalMarks,
+                answers,
+            };
+
+            const stored = JSON.parse(localStorage.getItem('smartexam_results') || '[]');
+            stored.push(result);
+            localStorage.setItem('smartexam_results', JSON.stringify(stored));
+
+            renderResult(result);
+        });
+    }
+
+    function renderResult(result) {
+        mainContent.innerHTML = `
+            <div class="card result">
+                <h2>Test complete!</h2>
+                <div class="score">${result.score} / ${result.totalMarks}</div>
+                <div style="display:flex; justify-content:center; gap:12px; margin-top:18px;">
+                    <a class="btn primary" href="testhistory.html">View history</a>
+                    <button class="btn secondary" id="takeAnother">Take another test</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('takeAnother').addEventListener('click', renderTestList);
+    }
+
+    renderTestList();
+</script>
+</body>
+</html>

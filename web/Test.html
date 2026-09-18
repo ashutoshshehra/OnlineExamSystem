@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Test</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            bg: #0b1220;
+            panel: rgba(255, 255, 255, 0.08);
+            panel-border: rgba(255, 255, 255, 0.16);
+            text: #ebf2ff;
+            muted: rgba(235, 242, 255, 0.7);
+            primary: #0d6efd;
+            primary-2: #6610f2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
+                linear-gradient(180deg, #081427 0%, #060a11 100%);
+            color: var(--text);
+        }
+
+        header {
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            background: rgba(7, 11, 23, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(muted);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text);
+        }
+
+        main {
+            padding: 32px 24px;
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 2.1rem;
+        }
+
+        .subtitle {
+            margin: 10px 0 24px;
+            color: var(--muted);
+            max-width: 620px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32);
+            backdrop-filter: blur(14px);
+            margin-top: 32px;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        label {
+            display: grid;
+            gap: 8px;
+            font-weight: 600;
+            color: var(muted)
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.09);
+            color: var(text);
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+            border-color: rgba(13, 110, 253, 0.55);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 18px;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: white;
+            box-shadow: 0 14px 30px rgba(9, 101, 212, 0.35);
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px rgba(9, 101, 212, 0.4);
+        }
+
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(text);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .question-list {
+            margin-top: 24px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .question {
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        .question h3 {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+            color: var(muted);
+        }
+
+        .question p {
+            margin: 10px 0 0;
+        }
+
+        .question .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: rgba(235, 242, 255, 0.7);
+        }
+
+        .question .remove {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            border: none;
+            background: rgba(255, 75, 75, 0.18);
+            color: #ff6767;
+            border-radius: 999px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        @media (max-width: 720px) {
+            main {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css" />
+    <script src="theme.js" defer></script>
+</head>
+<body>
+
+<header>
+    <a href="teacherhome.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <div class="brand">Create Test</div>
+</header>
+
+<main>
+    <div class="page-title">
+        <div>
+            <h1>Build your exam</h1>
+            <p class="subtitle">Add questions, set how many you want to include, and save the test for students.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <form id="createTestForm" autocomplete="off">
+            <div class="form-grid">
+                <label>
+                    Test name
+                    <input type="text" name="testName" placeholder="Midterm Exam" required />
+                </label>
+
+                <label>
+                    Subject
+                    <input type="text" name="subject" placeholder="Mathematics" required />
+                </label>
+
+                <label>
+                    Total questions to include
+                    <input type="number" name="questionCount" min="1" value="5" required />
+                </label>
+
+                <label>
+                    Time limit (minutes)
+                    <input type="number" name="timeLimit" min="1" value="45" required />
+                </label>
+
+                <label>
+                    Instructions (optional)
+                    <textarea name="instructions" placeholder="Add any instructions for students..."></textarea>
+                </label>
+            </div>
+
+            <div class="actions">
+                <button class="btn secondary" type="button" id="addQuestionBtn"><i class="fa-solid fa-plus"></i> Add question</button>
+                <button class="btn primary" type="submit"><i class="fa-solid fa-save"></i> Save test</button>
+            </div>
+        </form>
+
+        <div class="question-list" id="questionList">
+            <!-- Questions will appear here -->
+        </div>
+    </div>
+</main>
+
+<script>
+    const questionList = document.getElementById('questionList');
+    const addQuestionBtn = document.getElementById('addQuestionBtn');
+    const createTestForm = document.getElementById('createTestForm');
+
+    let questionIndex = 0;
+
+    function createQuestionCard(idx) {
+        const container = document.createElement('div');
+        container.className = 'question';
+        container.dataset.idx = idx;
+
+        const title = document.createElement('h3');
+        title.textContent = `Question ${idx + 1}`;
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'remove';
+        remove.textContent = 'Remove';
+        remove.addEventListener('click', () => {
+            container.remove();
+            updateQuestionTitles();
+        });
+
+        const questionLabel = document.createElement('label');
+        questionLabel.textContent = 'Question text';
+        const questionInput = document.createElement('textarea');
+        questionInput.name = `question_${idx}`;
+        questionInput.placeholder = 'Write the question here...';
+        questionInput.required = true;
+        questionLabel.appendChild(questionInput);
+
+        const choiceGrid = document.createElement('div');
+        choiceGrid.style.display = 'grid';
+        choiceGrid.style.gridTemplateColumns = '1fr 1fr';
+        choiceGrid.style.gap = '12px';
+        choiceGrid.style.marginTop = '14px';
+
+        for (let i = 1; i <= 4; i++) {
+            const choiceLabel = document.createElement('label');
+            choiceLabel.style.display = 'grid';
+            choiceLabel.style.gap = '6px';
+            choiceLabel.innerHTML = `Choice ${i}`;
+
+            const choiceInput = document.createElement('input');
+            choiceInput.type = 'text';
+            choiceInput.name = `question_${idx}_choice_${i}`;
+            choiceInput.placeholder = `Answer option ${i}`;
+            choiceInput.required = true;
+
+            choiceLabel.appendChild(choiceInput);
+            choiceGrid.appendChild(choiceLabel);
+        }
+
+        const correctLabel = document.createElement('label');
+        correctLabel.style.display = 'grid';
+        correctLabel.style.gap = '6px';
+        correctLabel.innerHTML = 'Correct answer';
+        const correctSelect = document.createElement('select');
+        correctSelect.name = `question_${idx}_correct`;
+        correctSelect.required = true;
+        ['A', 'B', 'C', 'D'].forEach((opt, index) => {
+            const option = document.createElement('option');
+            option.value = opt;
+            option.textContent = opt;
+            if (index === 0) option.selected = true;
+            correctSelect.appendChild(option);
+        });
+        correctLabel.appendChild(correctSelect);
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.innerHTML = `
+            <span><strong>Weight:</strong> <input type="number" name="question_${idx}_weight" value="1" min="1" style="width: 70px;" /></span>
+            <span><strong>Marks:</strong> <input type="number" name="question_${idx}_marks" value="1" min="1" style="width: 70px;" /></span>
+        `;
+
+        container.appendChild(title);
+        container.appendChild(remove);
+        container.appendChild(questionLabel);
+        container.appendChild(choiceGrid);
+        container.appendChild(correctLabel);
+        container.appendChild(meta);
+
+        return container;
+    }
+
+    function updateQuestionTitles() {
+        const cards = questionList.querySelectorAll('.question');
+        cards.forEach((card, idx) => {
+            card.querySelector('h3').textContent = `Question ${idx + 1}`;
+            card.dataset.idx = idx;
+            card.querySelectorAll('textarea, input, select').forEach((input) => {
+                if (input.name.startsWith('question_')) {
+                    input.name = input.name.replace(/question_\d+/, `question_${idx}`);
+                }
+            });
+        });
+    }
+
+    addQuestionBtn.addEventListener('click', () => {
+        const card = createQuestionCard(questionIndex++);
+        questionList.appendChild(card);
+    });
+
+    createTestForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const targetCount = Number(createTestForm.questionCount.value);
+        const actualCount = questionList.querySelectorAll('.question').length;
+
+        if (actualCount < targetCount) {
+            alert(`You have added ${actualCount} questions but set the test to include ${targetCount}. Add more questions or reduce the count.`);
+            return;
+        }
+
+        const data = new FormData(createTestForm);
+        const payload = {};
+        data.forEach((value, key) => {
+            payload[key] = value;
+        });
+
+        const questions = Array.from(questionList.querySelectorAll('.question')).map((card, idx) => {
+            const questionText = card.querySelector('textarea').value.trim();
+            const choices = Array.from(card.querySelectorAll('input[type="text"]')).map(el => el.value.trim());
+            const correct = card.querySelector('select').value;
+            const weight = Number(card.querySelector('input[name^="question_"][name$="_weight"]').value) || 1;
+            const marks = Number(card.querySelector('input[name^="question_"][name$="_marks"]').value) || 1;
+
+            return {
+                id: idx,
+                questionText,
+                choices,
+                correct,
+                weight,
+                marks,
+            };
+        });
+
+        const test = {
+            id: Date.now(),
+            createdAt: new Date().toISOString(),
+            name: payload.testName,
+            subject: payload.subject,
+            instructions: payload.instructions,
+            questionCount: Number(payload.questionCount),
+            timeLimit: Number(payload.timeLimit),
+            questions,
+        };
+
+        const stored = JSON.parse(localStorage.getItem('smartexam_tests') || '[]');
+        stored.push(test);
+        localStorage.setItem('smartexam_tests', JSON.stringify(stored));
+
+        alert('Test saved! Students can now take this exam.');
+        window.location.href = 'teacherhome.html';
+    });
+
+    // Add initial question
+    addQuestionBtn.click();
+</script>
+</body>
+</html>
