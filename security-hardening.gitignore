@@ -1,0 +1,6 @@
+# Runtime and local secret files
+/submissions/
+/uploads/
+*.env
+.env
+*.log

@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.servlet.ServletException;
@@ -8,82 +7,20 @@ import javax.servlet.http.*;
 
 @WebServlet(name = "StudentRegisterServlet", urlPatterns = {"/StudentRegisterServlet", "/studentRegister"})
 public class StudentRegisterServlet extends HttpServlet {
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-
-        res.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = res.getWriter();
-
-        String name = req.getParameter("name");
-        String studentId = req.getParameter("studentId");
-        String classGrade = req.getParameter("classGrade");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String confirm = req.getParameter("confirm");
-
-        if (name == null || email == null || password == null || name.trim().isEmpty() || email.trim().isEmpty()) {
-            out.println("<script>alert('All required fields must be filled!'); window.location.href='student.html';</script>");
-            return;
-        }
-
-        if (studentId == null || studentId.trim().isEmpty()) {
-            studentId = "STU-" + (int)(Math.random() * 9000 + 1000);
-        }
-
-        if (classGrade == null || classGrade.trim().isEmpty()) {
-            classGrade = "Class 10";
-        }
-
-        if (confirm != null && !password.equals(confirm)) {
-            out.println("<script>alert('Passwords do not match!'); window.location.href='student.html';</script>");
-            return;
-        }
-
-        name = name.trim();
-        email = email.trim();
-        studentId = studentId.trim();
-        classGrade = classGrade.trim();
-        String hashedPassword = PasswordUtil.hashPassword(password);
-
-        try (Connection con = DBConnection.getConnection()) {
-            if (con == null) {
-                // Offline fallback session
-                HttpSession session = req.getSession();
-                session.setAttribute("studentName", name);
-                session.setAttribute("studentId", studentId);
-                session.setAttribute("studentEmail", email);
-                session.setAttribute("classGrade", classGrade);
-                session.setAttribute("userRole", "STUDENT");
-                res.sendRedirect("studenthome.html");
-                return;
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String name=req.getParameter("name"), id=req.getParameter("studentId"), grade=req.getParameter("classGrade");
+        String email=req.getParameter("email"), password=req.getParameter("password"), confirm=req.getParameter("confirm");
+        if (name==null || email==null || password==null || confirm==null || name.trim().isEmpty() || email.trim().isEmpty() || password.length()<8) { fail(res,"Name, email, and a password of at least 8 characters are required."); return; }
+        if (!password.equals(confirm)) { fail(res,"Passwords do not match."); return; }
+        if (id==null || id.trim().isEmpty()) id="STU-"+java.util.UUID.randomUUID().toString().substring(0,8).toUpperCase();
+        if (grade==null || grade.trim().isEmpty()) grade="Class 10";
+        try (Connection con=DBConnection.getConnection()) {
+            if (con==null) { fail(res,"The service is temporarily unavailable."); return; }
+            try (PreparedStatement ps=con.prepareStatement("INSERT INTO students(name, studentId, class_grade, email, password) VALUES (?, ?, ?, ?, ?)")) {
+                ps.setString(1,name.trim()); ps.setString(2,id.trim()); ps.setString(3,grade.trim()); ps.setString(4,email.trim()); ps.setString(5,PasswordUtil.hashPassword(password)); ps.executeUpdate();
             }
-
-            String query = "INSERT INTO students(name, studentId, class_grade, email, password) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement ps = con.prepareStatement(query)) {
-                ps.setString(1, name);
-                ps.setString(2, studentId);
-                ps.setString(3, classGrade);
-                ps.setString(4, email);
-                ps.setString(5, hashedPassword);
-
-                int rows = ps.executeUpdate();
-                if (rows > 0) {
-                    HttpSession session = req.getSession();
-                    session.setAttribute("studentName", name);
-                    session.setAttribute("studentId", studentId);
-                    session.setAttribute("studentEmail", email);
-                    session.setAttribute("classGrade", classGrade);
-                    session.setAttribute("userRole", "STUDENT");
-                    res.sendRedirect("studenthome.html");
-                } else {
-                    out.println("<script>alert('Registration failed. Please try again.'); window.location.href='student.html';</script>");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            out.println("<script>alert('Registration Error: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='student.html';</script>");
-        }
+            res.sendRedirect("student.html?registered=1");
+        } catch(Exception e) { getServletContext().log("Student registration failed",e); fail(res,"Registration could not be completed. The email or student ID may already exist."); }
     }
+    private void fail(HttpServletResponse res,String message) throws IOException { res.sendRedirect("student.html?error="+java.net.URLEncoder.encode(message,"UTF-8")); }
 }

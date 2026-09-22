@@ -1,10 +1,19 @@
+# NetBeans / build output
 /build/
 /dist/
 /nbbuild/
 /nbdist/
 *.class
+
+# IDE files
 .idea/
 *.iml
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Runtime uploads and local secrets
+/submissions/
+/uploads/
+*.env
+.env
