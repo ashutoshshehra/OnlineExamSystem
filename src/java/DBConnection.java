@@ -1,41 +1,39 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
-public class DBConnection {
+public final class DBConnection {
+    private DBConnection() { }
 
-    private static final String URL = "jdbc:mysql://localhost:3306/exam?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASS = "ashu0811";
+    private static String setting(String key, String fallback) {
+        String value = System.getProperty(key);
+        if (value == null || value.trim().isEmpty()) value = System.getenv(key);
+        return value == null || value.trim().isEmpty() ? fallback : value.trim();
+    }
 
     public static Connection getConnection() {
-        Connection con = null;
+        String url = setting("SMARTEXAM_DB_URL", "jdbc:mysql://localhost:3306/exam?useSSL=true&serverTimezone=UTC");
+        String user = setting("SMARTEXAM_DB_USER", "root");
+        String password = setting("SMARTEXAM_DB_PASSWORD", null);
+        if (password == null) {
+            System.err.println("Database password is not configured. Set SMARTEXAM_DB_PASSWORD.");
+            return null;
+        }
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(URL, USER, PASS);
-        } catch (ClassNotFoundException e) {
-            System.err.println("[ERROR] MySQL JDBC Driver Not Found: " + e.getMessage());
+            return DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
-            System.err.println("[ERROR] Database Connection Failed: " + e.getMessage());
+            System.err.println("Database connection failed: " + e.getClass().getSimpleName());
+            return null;
         }
-        return con;
     }
 
     public static boolean testConnection() {
         try (Connection c = getConnection()) {
             return c != null && !c.isClosed();
-        } catch (Exception e) {
-            return false;
-        }
+        } catch (Exception e) { return false; }
     }
 
     public static void closeQuietly(AutoCloseable resource) {
-        if (resource != null) {
-            try {
-                resource.close();
-            } catch (Exception ignored) {
-            }
-        }
+        if (resource != null) try { resource.close(); } catch (Exception ignored) { }
     }
 }
