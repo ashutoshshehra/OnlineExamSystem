@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Assignments - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="brand-group">
+            <a href="studenthome.html" class="brand-logo"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <div class="brand-title">Assignments Portal</div>
+                <div class="brand-subtitle">Class Homework & Project Submissions</div>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="studenthome.html" class="btn btn-secondary"><i class="fa-solid fa-house"></i> Dashboard</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Your Class Assignments</h1>
+                <p class="page-desc">Submit your assignments in PDF format before the due dates.</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Assignment Title</th>
+                        <th>Subject</th>
+                        <th>Class</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="studentAssignTable">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Submission Upload Modal -->
+        <div class="modal-overlay" id="uploadModal">
+            <div class="modal-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.3rem;"><i class="fa-solid fa-upload"></i> Submit Assignment</h3>
+                    <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeModal()">&times;</button>
+                </div>
+                <form id="submissionForm" onsubmit="handleAssignmentSubmit(event)">
+                    <h4 id="modalAssignTitle" style="color: var(--primary-light); margin-bottom: 6px;"></h4>
+                    <p id="modalAssignDesc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;"></p>
+
+                    <div class="form-group">
+                        <label>Select PDF / Solution Document</label>
+                        <input type="file" id="assignFileInput" accept=".pdf,.doc,.docx" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Student Notes (Optional)</label>
+                        <textarea id="assignNotes" rows="3" placeholder="Add any comments for your teacher..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem;">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Upload & Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        const student = getCurrentStudent();
+        let activeAssignmentId = null;
+
+        function getAssignments() {
+            let list = JSON.parse(localStorage.getItem('smartexam_assignments') || '[]');
+            if (list.length === 0) {
+                list = [
+                    { id: 1, title: "Class 10 Trigonometry Problem Set", subject: "Mathematics", classGrade: "Class 10", dueDate: "2026-03-30", description: "Solve exercises 8.1 to 8.4 from NCERT textbook and write step-by-step proofs." },
+                    { id: 2, title: "Class 10 Chemical Reactions Lab Report", subject: "Science", classGrade: "Class 10", dueDate: "2026-04-05", description: "Document observations of copper sulphate and iron nail displacement reaction." },
+                    { id: 3, title: "College CS: Java Servlet Architecture Report", subject: "Java Programming", classGrade: "College / CS", dueDate: "2026-04-10", description: "Explain HttpServletRequest, response cycle, and session management." }
+                ];
+                localStorage.setItem('smartexam_assignments', JSON.stringify(list));
+            }
+            return list;
+        }
+
+        function getSubmissions() {
+            return JSON.parse(localStorage.getItem('smartexam_submissions') || '[]');
+        }
+
+        function renderAssignments() {
+            const list = getAssignments();
+            const subs = getSubmissions();
+            const tbody = document.getElementById('studentAssignTable');
+
+            tbody.innerHTML = list.map(a => {
+                const sub = subs.find(s => s.assignmentId == a.id && s.student == student.name);
+                const isSubmitted = !!sub;
+                const isOverdue = !isSubmitted && new Date(a.dueDate) < new Date();
+
+                let statusBadge = `<span class="badge badge-warning">Pending</span>`;
+                if (isSubmitted) statusBadge = `<span class="badge badge-success">Submitted (${sub.grade || 'Under Review'})</span>`;
+                else if (isOverdue) statusBadge = `<span class="badge badge-danger">Overdue</span>`;
+
+                return `
+                    <tr>
+                        <td style="font-weight: 600;">${a.title}</td>
+                        <td>${a.subject}</td>
+                        <td><span class="badge badge-accent">${a.classGrade || 'Class 10'}</span></td>
+                        <td>${a.dueDate}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.85rem;" onclick="openUploadModal(${a.id})">
+                                <i class="fa-solid ${isSubmitted ? 'fa-eye' : 'fa-upload'}"></i> ${isSubmitted ? 'View Details' : 'Submit'}
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openUploadModal(id) {
+            activeAssignmentId = id;
+            const a = getAssignments().find(x => x.id == id);
+            if (!a) return;
+
+            document.getElementById('modalAssignTitle').textContent = a.title;
+            document.getElementById('modalAssignDesc').textContent = a.description;
+            document.getElementById('uploadModal').style.display = 'grid';
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        function handleAssignmentSubmit(e) {
+            e.preventDefault();
+            const file = document.getElementById('assignFileInput').files[0];
+            const notes = document.getElementById('assignNotes').value.trim();
+
+            if (!file) {
+                showToast("Please select a document file!", "warning");
+                return;
+            }
+
+            const subs = getSubmissions().filter(s => !(s.assignmentId == activeAssignmentId && s.student == student.name));
+            subs.push({
+                assignmentId: activeAssignmentId,
+                student: student.name,
+                fileName: file.name,
+                notes: notes,
+                submittedAt: new Date().toLocaleString(),
+                grade: "Submitted"
+            });
+
+            localStorage.setItem('smartexam_submissions', JSON.stringify(subs));
+            showToast("Assignment submitted successfully!", "success");
+            closeModal();
+            renderAssignments();
+        }
+
+        renderAssignments();
+    </script>
+</body>
+</html>

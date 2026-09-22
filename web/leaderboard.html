@@ -1,193 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leaderboard</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-:root {
-  --bg:#0b1220;
-  --text:#ebf2ff;
-  --muted:rgba(235,242,255,0.7);
-  --primary:#0d6efd;
-}
-
-body{
-  margin:0;
-  background:#081427;
-  color:var(--text);
-  font-family:sans-serif;
-}
-
-header{
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-}
-
-main{
-  padding:20px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:12px;
-}
-
-.rank.gold{color:gold;}
-.rank.silver{color:silver;}
-.rank.bronze{color:orange;}
-
-.progress{
-  height:8px;
-  background:#333;
-  border-radius:10px;
-}
-
-.progress-inner{
-  height:100%;
-  background:linear-gradient(45deg,#0d6efd,#6610f2);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Leaderboard - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 1.5rem;
+            margin: 2rem 0 3rem;
+            text-align: center;
+        }
+        .podium-slot {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 1rem;
+            width: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: var(--backdrop-blur);
+        }
+        .podium-1 {
+            order: 2;
+            height: 240px;
+            border-color: rgba(234, 179, 8, 0.4);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
+        }
+        .podium-2 {
+            order: 1;
+            height: 200px;
+            border-color: rgba(148, 163, 184, 0.4);
+        }
+        .podium-3 {
+            order: 3;
+            height: 170px;
+            border-color: rgba(217, 119, 6, 0.4);
+        }
+        .medal-icon {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        .gold { color: #facc15; }
+        .silver { color: #cbd5e1; }
+        .bronze { color: #f97316; }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <h2>Leaderboard</h2>
-</header>
-
-<main>
-
-<select id="testSelect"></select>
-
-<table>
-<thead>
-<tr>
-<th>Rank</th>
-<th>Student</th>
-<th>Score</th>
-<th>Progress</th>
-</tr>
-</thead>
-
-<tbody id="leaderboardBody"></tbody>
-</table>
-
-</main>
-
-<script>
-
-// ✅ Current student (normalized)
-const currentStudent = (localStorage.getItem('smartexam_studentName') || 'Student')
-  .trim()
-  .toLowerCase();
-
-// ✅ Load Data
-function loadTests(){
-  return JSON.parse(localStorage.getItem('smartexam_tests') || '[]');
-}
-
-function loadResults(){
-  return JSON.parse(localStorage.getItem('smartexam_results') || '[]');
-}
-
-// ✅ Get leaderboard data
-function getResultsForTest(testId){
-
-  const results = loadResults().filter(r => r.testId === testId);
-
-  const leaderboard = {};
-
-  results.forEach(r => {
-    const name = r.student.trim().toLowerCase();
-
-    if(!leaderboard[name] || leaderboard[name] < r.score){
-      leaderboard[name] = r.score;
-    }
-  });
-
-  return Object.entries(leaderboard)
-    .map(([student, score]) => ({student, score}))
-    .sort((a,b)=>b.score-a.score);
-}
-
-// ✅ Render leaderboard
-function renderLeaderboard(testId){
-
-  const data = getResultsForTest(testId);
-  const tbody = document.getElementById('leaderboardBody');
-
-  tbody.innerHTML = '';
-
-  if(!data.length){
-    tbody.innerHTML = `<tr><td colspan="4">No Data</td></tr>`;
-    return;
-  }
-
-  data.slice(0,5).forEach((entry, idx)=>{
-
-    let medal = 'normal';
-    if(idx===0) medal='gold';
-    else if(idx===1) medal='silver';
-    else if(idx===2) medal='bronze';
-
-    // ✅ Highlight fix
-    const highlight = entry.student === currentStudent
-      ? 'background:rgba(13,110,253,0.2); font-weight:bold;'
-      : '';
-
-    const tr = document.createElement('tr');
-    tr.setAttribute('style', highlight);
-
-    tr.innerHTML = `
-      <td class="rank ${medal}">${idx+1}</td>
-      <td>${entry.student}</td>
-      <td>${entry.score}%</td>
-      <td>
-        <div class="progress">
-          <div class="progress-inner" style="width:${entry.score}%"></div>
+    <header class="app-header">
+        <div class="brand-group">
+            <a href="studenthome.html" class="brand-logo"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <div class="brand-title">Academic Leaderboard</div>
+                <div class="brand-subtitle">Top Performers & Class Rankings</div>
+            </div>
         </div>
-      </td>
-    `;
+        <nav class="nav-links">
+            <a href="studenthome.html" class="btn btn-secondary"><i class="fa-solid fa-house"></i> Dashboard</a>
+        </nav>
+    </header>
 
-    tbody.appendChild(tr);
-  });
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Class Hall of Fame</h1>
+                <p class="page-desc">Recognizing students who have achieved top scores across examinations.</p>
+            </div>
+        </div>
 
-}
+        <!-- Top 3 Podium -->
+        <div class="podium" id="podiumContainer">
+            <!-- Injected by JS -->
+        </div>
 
-// ✅ Init test select
-function init(){
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <label style="font-weight: 700;"><i class="fa-solid fa-filter"></i> Filter Leaderboard:</label>
+            <select id="leadClass" class="filter-select" onchange="renderLeaderboard()">
+                <option value="ALL">All Academic Classes</option>
+                <option value="Class 5">Class 5</option>
+                <option value="Class 6">Class 6</option>
+                <option value="Class 7">Class 7</option>
+                <option value="Class 8">Class 8</option>
+                <option value="Class 9">Class 9</option>
+                <option value="Class 10" selected>Class 10</option>
+                <option value="Class 11">Class 11</option>
+                <option value="Class 12">Class 12</option>
+                <option value="College / CS">College / CS</option>
+            </select>
+        </div>
 
-  const select = document.getElementById('testSelect');
-  const tests = loadTests();
+        <!-- Full Leaderboard Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Student Name</th>
+                        <th>Exam / Subject</th>
+                        <th>Score</th>
+                        <th>Percentage</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="leadTableBody">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
 
-  if(!tests.length){
-    select.innerHTML = `<option>No Tests</option>`;
-    return;
-  }
+    <script src="js/app.js"></script>
+    <script>
+        const student = getCurrentStudent();
 
-  select.innerHTML = tests.map(t =>
-    `<option value="${t.id}">${t.name}</option>`
-  ).join('');
+        function getLeaderboardData() {
+            let results = API.getLocalResults();
+            if (results.length === 0) {
+                results = [
+                    { student: "Ashutosh Shehra", examTitle: "Class 10 Mathematics: Trigonometry", percentage: 100, score: 25, totalMarks: 25 },
+                    { student: "Priya Sharma", examTitle: "Class 12 Physics: Electrostatics", percentage: 95, score: 28, totalMarks: 30 },
+                    { student: "Ananya Iyer", examTitle: "College CS: Core Java & OOPs", percentage: 90, score: 36, totalMarks: 40 },
+                    { student: "Deepak Patel", examTitle: "Class 8 Mathematics: Linear Equations", percentage: 88, score: 22, totalMarks: 25 },
+                    { student: "Kavita Rao", examTitle: "Class 9 Science: Cell Biology", percentage: 84, score: 21, totalMarks: 25 },
+                    { student: "Siddharth Jain", examTitle: "Class 6 Mathematics: Integers", percentage: 80, score: 16, totalMarks: 20 }
+                ];
+                localStorage.setItem('smartexam_results', JSON.stringify(results));
+            }
+            return results.sort((a, b) => (b.percentage || 0) - (a.percentage || 0));
+        }
 
-  renderLeaderboard(Number(select.value));
+        function renderLeaderboard() {
+            const list = getLeaderboardData();
+            const podium = document.getElementById('podiumContainer');
+            const tbody = document.getElementById('leadTableBody');
 
-  select.addEventListener('change',()=>{
-    renderLeaderboard(Number(select.value));
-  });
-}
+            // Render Podium
+            const p1 = list[0] || { student: "TBD", percentage: 0 };
+            const p2 = list[1] || { student: "TBD", percentage: 0 };
+            const p3 = list[2] || { student: "TBD", percentage: 0 };
 
-init();
+            podium.innerHTML = `
+                <div class="podium-slot podium-2">
+                    <div class="medal-icon silver"><i class="fa-solid fa-medal"></i></div>
+                    <strong style="font-size: 1.1rem; margin-top: auto;">${p2.student}</strong>
+                    <span style="color: #cbd5e1; font-weight: 700; margin-top: 4px;">${p2.percentage}%</span>
+                    <small style="color: var(--text-muted); font-size: 0.75rem;">Rank 2</small>
+                </div>
+                <div class="podium-slot podium-1">
+                    <div class="medal-icon gold"><i class="fa-solid fa-crown"></i></div>
+                    <strong style="font-size: 1.25rem; margin-top: auto;">${p1.student}</strong>
+                    <span style="color: #facc15; font-weight: 800; font-size: 1.2rem; margin-top: 4px;">${p1.percentage}%</span>
+                    <small style="color: var(--text-muted); font-size: 0.8rem;">Rank 1 &bull; Champion</small>
+                </div>
+                <div class="podium-slot podium-3">
+                    <div class="medal-icon bronze"><i class="fa-solid fa-award"></i></div>
+                    <strong style="font-size: 1.05rem; margin-top: auto;">${p3.student}</strong>
+                    <span style="color: #f97316; font-weight: 700; margin-top: 4px;">${p3.percentage}%</span>
+                    <small style="color: var(--text-muted); font-size: 0.75rem;">Rank 3</small>
+                </div>
+            `;
 
-</script>
+            // Render Table
+            tbody.innerHTML = list.map((item, idx) => {
+                const rank = idx + 1;
+                let rankBadge = `<span style="font-weight: bold;">#${rank}</span>`;
+                if (rank === 1) rankBadge = `<span class="gold" style="font-size: 1.2rem;"><i class="fa-solid fa-medal"></i> 1</span>`;
+                else if (rank === 2) rankBadge = `<span class="silver" style="font-size: 1.2rem;"><i class="fa-solid fa-medal"></i> 2</span>`;
+                else if (rank === 3) rankBadge = `<span class="bronze" style="font-size: 1.2rem;"><i class="fa-solid fa-medal"></i> 3</span>`;
 
+                const isMe = item.student && item.student.toLowerCase() === student.name.toLowerCase();
+
+                return `
+                    <tr style="${isMe ? 'background: rgba(37, 99, 235, 0.15); border-left: 3px solid #3b82f6;' : ''}">
+                        <td>${rankBadge}</td>
+                        <td style="font-weight: 700;">
+                            ${item.student} ${isMe ? '<span class="badge badge-primary" style="margin-left: 6px;">You</span>' : ''}
+                        </td>
+                        <td>${item.examTitle || 'Exam Attempt'}</td>
+                        <td>${item.score} / ${item.totalMarks}</td>
+                        <td><strong>${item.percentage}%</strong></td>
+                        <td><span class="badge ${item.percentage >= 40 ? 'badge-success' : 'badge-danger'}">${item.percentage >= 40 ? 'QUALIFIED' : 'FAIL'}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        renderLeaderboard();
+    </script>
 </body>
 </html>

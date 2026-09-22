@@ -1,451 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Test</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Exam Builder - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        :root {
-            bg: #0b1220;
-            panel: rgba(255, 255, 255, 0.08);
-            panel-border: rgba(255, 255, 255, 0.16);
-            text: #ebf2ff;
-            muted: rgba(235, 242, 255, 0.7);
-            primary: #0d6efd;
-            primary-2: #6610f2;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
-                linear-gradient(180deg, #081427 0%, #060a11 100%);
-            color: var(--text);
-        }
-
-        header {
-            padding: 18px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            background: rgba(7, 11, 23, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .brand {
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(muted);
-            font-weight: 600;
-            text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 999px;
-            transition: background 0.18s ease, color 0.18s ease;
-        }
-
-        .back-link:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: var(--text);
-        }
-
-        main {
-            padding: 32px 24px;
-            max-width: 1040px;
-            margin: 0 auto;
-        }
-
-        .page-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-
-        .page-title h1 {
-            margin: 0;
-            font-size: 2.1rem;
-        }
-
-        .subtitle {
-            margin: 10px 0 24px;
-            color: var(--muted);
-            max-width: 620px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32);
-            backdrop-filter: blur(14px);
-            margin-top: 32px;
-        }
-
-        .form-grid {
-            display: grid;
-            gap: 18px;
-        }
-
-        label {
-            display: grid;
-            gap: 8px;
-            font-weight: 600;
-            color: var(muted)
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            background: rgba(255, 255, 255, 0.09);
-            color: var(text);
-            font-size: 1rem;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
-            border-color: rgba(13, 110, 253, 0.55);
-        }
-
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 18px;
-        }
-
-        .btn {
-            padding: 12px 18px;
-            border-radius: 999px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-
-        .btn.primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            color: white;
-            box-shadow: 0 14px 30px rgba(9, 101, 212, 0.35);
-        }
-
-        .btn.primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 18px 34px rgba(9, 101, 212, 0.4);
-        }
-
-        .btn.secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(text);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        .btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
-        }
-
-        .question-list {
-            margin-top: 24px;
-            display: grid;
-            gap: 18px;
-        }
-
-        .question {
-            padding: 18px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+        .question-card-edit {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             position: relative;
         }
-
-        .question h3 {
-            margin: 0 0 10px;
-            font-size: 1.1rem;
-            color: var(muted);
-        }
-
-        .question p {
-            margin: 10px 0 0;
-        }
-
-        .question .meta {
+        .ai-banner-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
             display: flex;
+            align-items: center;
+            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.9rem;
-            color: rgba(235, 242, 255, 0.7);
-        }
-
-        .question .remove {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            border: none;
-            background: rgba(255, 75, 75, 0.18);
-            color: #ff6767;
-            border-radius: 999px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        @media (max-width: 720px) {
-            main {
-                padding: 24px 18px;
-            }
+            gap: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
         }
     </style>
-    <link rel="stylesheet" href="theme.css" />
-    <script src="theme.js" defer></script>
 </head>
 <body>
 
-<header>
-    <a href="teacherhome.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    <div class="brand">Create Test</div>
-</header>
-
-<main>
-    <div class="page-title">
-        <div>
-            <h1>Build your exam</h1>
-            <p class="subtitle">Add questions, set how many you want to include, and save the test for students.</p>
+    <header class="app-header">
+        <div class="brand-group">
+            <a href="teacherhome.html" class="brand-logo" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <div class="brand-title">AI Exam Builder</div>
+                <div class="brand-subtitle">Create or AI-Generate Curriculum Assessments</div>
+            </div>
         </div>
-    </div>
+        <nav class="nav-links">
+            <a href="teacherhome.html" class="btn btn-secondary"><i class="fa-solid fa-house"></i> Dashboard</a>
+        </nav>
+    </header>
 
-    <div class="card">
-        <form id="createTestForm" autocomplete="off">
-            <div class="form-grid">
-                <label>
-                    Test name
-                    <input type="text" name="testName" placeholder="Midterm Exam" required />
-                </label>
+    <main class="main-content">
+        <!-- AI Generator Highlight Banner -->
+        <div class="ai-banner-btn">
+            <div>
+                <h2 style="font-size: 1.4rem; color: white; margin-bottom: 4px;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Need Instant Questions? Generate with AI!
+                </h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 0.92rem;">
+                    Enter any curriculum topic and AI will create questions with options, answers, and explanations automatically.
+                </p>
+            </div>
+            <button class="btn btn-primary" style="background: #ffffff; color: #1e1b4b; font-weight: 800;" onclick="openAIModal()">
+                <i class="fa-solid fa-bolt"></i> Launch AI Question Assistant
+            </button>
+        </div>
 
-                <label>
-                    Subject
-                    <input type="text" name="subject" placeholder="Mathematics" required />
-                </label>
-
-                <label>
-                    Total questions to include
-                    <input type="number" name="questionCount" min="1" value="5" required />
-                </label>
-
-                <label>
-                    Time limit (minutes)
-                    <input type="number" name="timeLimit" min="1" value="45" required />
-                </label>
-
-                <label>
-                    Instructions (optional)
-                    <textarea name="instructions" placeholder="Add any instructions for students..."></textarea>
-                </label>
+        <form id="createExamForm" onsubmit="saveExam(event)">
+            <!-- Exam Basic Information -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;"><i class="fa-solid fa-sliders"></i> Exam Settings</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+                    <div class="form-group">
+                        <label>Exam Title</label>
+                        <input type="text" id="examTitle" required placeholder="e.g. Unit Test: Optics & Waves">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Academic Class</label>
+                        <select id="examClass" required>
+                            <option value="Class 5">Class 5</option>
+                            <option value="Class 6">Class 6</option>
+                            <option value="Class 7">Class 7</option>
+                            <option value="Class 8">Class 8</option>
+                            <option value="Class 9">Class 9</option>
+                            <option value="Class 10" selected>Class 10</option>
+                            <option value="Class 11">Class 11</option>
+                            <option value="Class 12">Class 12</option>
+                            <option value="College / CS">College / CS</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="examSubject" required placeholder="e.g. Physics, Science, Java...">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (Minutes)</label>
+                        <input type="number" id="examDuration" value="30" min="5" max="180" required>
+                    </div>
+                </div>
             </div>
 
-            <div class="actions">
-                <button class="btn secondary" type="button" id="addQuestionBtn"><i class="fa-solid fa-plus"></i> Add question</button>
-                <button class="btn primary" type="submit"><i class="fa-solid fa-save"></i> Save test</button>
+            <!-- Questions List -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.3rem;"><i class="fa-solid fa-list-ol"></i> Exam Questions (<span id="qCountLabel">0</span>)</h3>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn btn-secondary" onclick="addBlankQuestion()"><i class="fa-solid fa-plus"></i> Add Question</button>
+                    <label class="btn btn-secondary" style="margin: 0; cursor: pointer;">
+                        <i class="fa-solid fa-file-csv"></i> Bulk CSV Upload
+                        <input type="file" accept=".csv" style="display: none;" onchange="handleCSVUpload(this)">
+                    </label>
+                </div>
+            </div>
+
+            <div id="questionsContainer">
+                <!-- Dynamically added question cards -->
+            </div>
+
+            <div style="text-align: right; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 14px 32px; font-size: 1.05rem;">
+                    <i class="fa-solid fa-floppy-disk"></i> Publish & Save Examination
+                </button>
             </div>
         </form>
 
-        <div class="question-list" id="questionList">
-            <!-- Questions will appear here -->
+        <!-- AI GENERATION MODAL -->
+        <div class="modal-overlay" id="aiModal">
+            <div class="modal-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.3rem; color: #f472b6;"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Question Generator</h3>
+                    <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeAIModal()">&times;</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Target Academic Class</label>
+                    <select id="aiClass">
+                        <option value="Class 5">Class 5</option>
+                        <option value="Class 6">Class 6</option>
+                        <option value="Class 7">Class 7</option>
+                        <option value="Class 8">Class 8</option>
+                        <option value="Class 9">Class 9</option>
+                        <option value="Class 10" selected>Class 10</option>
+                        <option value="Class 11">Class 11</option>
+                        <option value="Class 12">Class 12</option>
+                        <option value="College / CS">College / CS</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="aiSubject" placeholder="e.g. Science, Mathematics, Java Programming" value="Science">
+                </div>
+
+                <div class="form-group">
+                    <label>Topic / Concept Keyword</label>
+                    <input type="text" id="aiTopic" placeholder="e.g. Chemical Reactions, Trigonometry, Electric Current..." required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Difficulty</label>
+                        <select id="aiDiff">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard (Advanced)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Question Count</label>
+                        <input type="number" id="aiCount" value="5" min="1" max="15">
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAIModal()">Cancel</button>
+                    <button type="button" class="btn btn-ai" onclick="runAIGeneration()">
+                        <i class="fa-solid fa-sparkles"></i> Generate & Insert into Exam
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<script>
-    const questionList = document.getElementById('questionList');
-    const addQuestionBtn = document.getElementById('addQuestionBtn');
-    const createTestForm = document.getElementById('createTestForm');
+    <script src="js/app.js"></script>
+    <script>
+        let questionIndex = 0;
 
-    let questionIndex = 0;
+        function openAIModal() { document.getElementById('aiModal').style.display = 'grid'; }
+        function closeAIModal() { document.getElementById('aiModal').style.display = 'none'; }
 
-    function createQuestionCard(idx) {
-        const container = document.createElement('div');
-        container.className = 'question';
-        container.dataset.idx = idx;
+        function runAIGeneration() {
+            const cls = document.getElementById('aiClass').value;
+            const sub = document.getElementById('aiSubject').value;
+            const topic = document.getElementById('aiTopic').value.trim();
+            const diff = document.getElementById('aiDiff').value;
+            const count = Number(document.getElementById('aiCount').value) || 5;
 
-        const title = document.createElement('h3');
-        title.textContent = `Question ${idx + 1}`;
+            if (!topic) {
+                showToast("Please enter a topic name!", "warning");
+                return;
+            }
 
-        const remove = document.createElement('button');
-        remove.type = 'button';
-        remove.className = 'remove';
-        remove.textContent = 'Remove';
-        remove.addEventListener('click', () => {
-            container.remove();
-            updateQuestionTitles();
-        });
+            const generated = AIEngine.generateQuestions(cls, sub, topic, diff, count);
+            
+            // Populate exam settings if blank
+            if (!document.getElementById('examTitle').value) {
+                document.getElementById('examTitle').value = `${sub}: ${topic} Test`;
+            }
+            document.getElementById('examClass').value = cls;
+            document.getElementById('examSubject').value = sub;
 
-        const questionLabel = document.createElement('label');
-        questionLabel.textContent = 'Question text';
-        const questionInput = document.createElement('textarea');
-        questionInput.name = `question_${idx}`;
-        questionInput.placeholder = 'Write the question here...';
-        questionInput.required = true;
-        questionLabel.appendChild(questionInput);
-
-        const choiceGrid = document.createElement('div');
-        choiceGrid.style.display = 'grid';
-        choiceGrid.style.gridTemplateColumns = '1fr 1fr';
-        choiceGrid.style.gap = '12px';
-        choiceGrid.style.marginTop = '14px';
-
-        for (let i = 1; i <= 4; i++) {
-            const choiceLabel = document.createElement('label');
-            choiceLabel.style.display = 'grid';
-            choiceLabel.style.gap = '6px';
-            choiceLabel.innerHTML = `Choice ${i}`;
-
-            const choiceInput = document.createElement('input');
-            choiceInput.type = 'text';
-            choiceInput.name = `question_${idx}_choice_${i}`;
-            choiceInput.placeholder = `Answer option ${i}`;
-            choiceInput.required = true;
-
-            choiceLabel.appendChild(choiceInput);
-            choiceGrid.appendChild(choiceLabel);
-        }
-
-        const correctLabel = document.createElement('label');
-        correctLabel.style.display = 'grid';
-        correctLabel.style.gap = '6px';
-        correctLabel.innerHTML = 'Correct answer';
-        const correctSelect = document.createElement('select');
-        correctSelect.name = `question_${idx}_correct`;
-        correctSelect.required = true;
-        ['A', 'B', 'C', 'D'].forEach((opt, index) => {
-            const option = document.createElement('option');
-            option.value = opt;
-            option.textContent = opt;
-            if (index === 0) option.selected = true;
-            correctSelect.appendChild(option);
-        });
-        correctLabel.appendChild(correctSelect);
-
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.innerHTML = `
-            <span><strong>Weight:</strong> <input type="number" name="question_${idx}_weight" value="1" min="1" style="width: 70px;" /></span>
-            <span><strong>Marks:</strong> <input type="number" name="question_${idx}_marks" value="1" min="1" style="width: 70px;" /></span>
-        `;
-
-        container.appendChild(title);
-        container.appendChild(remove);
-        container.appendChild(questionLabel);
-        container.appendChild(choiceGrid);
-        container.appendChild(correctLabel);
-        container.appendChild(meta);
-
-        return container;
-    }
-
-    function updateQuestionTitles() {
-        const cards = questionList.querySelectorAll('.question');
-        cards.forEach((card, idx) => {
-            card.querySelector('h3').textContent = `Question ${idx + 1}`;
-            card.dataset.idx = idx;
-            card.querySelectorAll('textarea, input, select').forEach((input) => {
-                if (input.name.startsWith('question_')) {
-                    input.name = input.name.replace(/question_\d+/, `question_${idx}`);
-                }
+            // Append to question list
+            generated.forEach(q => {
+                addQuestionCard(q.text, q.options[0], q.options[1], q.options[2], q.options[3], q.correct, q.explanation, q.marks);
             });
-        });
-    }
 
-    addQuestionBtn.addEventListener('click', () => {
-        const card = createQuestionCard(questionIndex++);
-        questionList.appendChild(card);
-    });
-
-    createTestForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const targetCount = Number(createTestForm.questionCount.value);
-        const actualCount = questionList.querySelectorAll('.question').length;
-
-        if (actualCount < targetCount) {
-            alert(`You have added ${actualCount} questions but set the test to include ${targetCount}. Add more questions or reduce the count.`);
-            return;
+            closeAIModal();
+            showToast(`✨ Generated and added ${generated.length} questions!`, "success");
         }
 
-        const data = new FormData(createTestForm);
-        const payload = {};
-        data.forEach((value, key) => {
-            payload[key] = value;
-        });
+        function addBlankQuestion() {
+            addQuestionCard("", "", "", "", "", "A", "", 5);
+        }
 
-        const questions = Array.from(questionList.querySelectorAll('.question')).map((card, idx) => {
-            const questionText = card.querySelector('textarea').value.trim();
-            const choices = Array.from(card.querySelectorAll('input[type="text"]')).map(el => el.value.trim());
-            const correct = card.querySelector('select').value;
-            const weight = Number(card.querySelector('input[name^="question_"][name$="_weight"]').value) || 1;
-            const marks = Number(card.querySelector('input[name^="question_"][name$="_marks"]').value) || 1;
+        function addQuestionCard(text, opA, opB, opC, opD, correct, explanation, marks) {
+            questionIndex++;
+            const idx = questionIndex;
+            const container = document.getElementById('questionsContainer');
 
-            return {
-                id: idx,
-                questionText,
-                choices,
-                correct,
-                weight,
-                marks,
+            const card = document.createElement('div');
+            card.className = 'question-card-edit';
+            card.id = `qCard_${idx}`;
+
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                    <strong style="color: var(--primary-light);">Question ${idx}</strong>
+                    <button type="button" class="btn btn-secondary" style="padding: 4px 10px; color: #f87171;" onclick="document.getElementById('qCard_${idx}').remove(); updateCount();">
+                        <i class="fa-solid fa-trash"></i> Remove
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Question Text</label>
+                    <textarea class="q-text" rows="2" required placeholder="Write question statement here...">${text || ''}</textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group"><label>Option A</label><input type="text" class="q-opA" value="${opA || ''}" required placeholder="Option A"></div>
+                    <div class="form-group"><label>Option B</label><input type="text" class="q-opB" value="${opB || ''}" required placeholder="Option B"></div>
+                    <div class="form-group"><label>Option C</label><input type="text" class="q-opC" value="${opC || ''}" required placeholder="Option C"></div>
+                    <div class="form-group"><label>Option D</label><input type="text" class="q-opD" value="${opD || ''}" required placeholder="Option D"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label>Correct Answer Key</label>
+                        <select class="q-correct">
+                            <option value="A" ${correct === 'A' ? 'selected' : ''}>A</option>
+                            <option value="B" ${correct === 'B' ? 'selected' : ''}>B</option>
+                            <option value="C" ${correct === 'C' ? 'selected' : ''}>C</option>
+                            <option value="D" ${correct === 'D' ? 'selected' : ''}>D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Marks</label>
+                        <input type="number" class="q-marks" value="${marks || 5}" min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Explanation / Solution</label>
+                    <input type="text" class="q-exp" value="${explanation || ''}" placeholder="Explain why the answer is correct...">
+                </div>
+            `;
+            container.appendChild(card);
+            updateCount();
+        }
+
+        function updateCount() {
+            const count = document.querySelectorAll('.question-card-edit').length;
+            document.getElementById('qCountLabel').textContent = count;
+        }
+
+        function handleCSVUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const lines = e.target.result.split('\n');
+                let added = 0;
+                lines.forEach((line, i) => {
+                    if (i === 0 || !line.trim()) return; // skip header
+                    const parts = line.split(',');
+                    if (parts.length >= 6) {
+                        addQuestionCard(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5].trim().toUpperCase(), parts[6] || "", 5);
+                        added++;
+                    }
+                });
+                showToast(`Imported ${added} questions from CSV!`, "success");
             };
-        });
+            reader.readAsText(file);
+        }
 
-        const test = {
-            id: Date.now(),
-            createdAt: new Date().toISOString(),
-            name: payload.testName,
-            subject: payload.subject,
-            instructions: payload.instructions,
-            questionCount: Number(payload.questionCount),
-            timeLimit: Number(payload.timeLimit),
-            questions,
-        };
+        function saveExam(e) {
+            e.preventDefault();
+            const cards = document.querySelectorAll('.question-card-edit');
+            if (cards.length === 0) {
+                showToast("Please add at least one question!", "warning");
+                return;
+            }
 
-        const stored = JSON.parse(localStorage.getItem('smartexam_tests') || '[]');
-        stored.push(test);
-        localStorage.setItem('smartexam_tests', JSON.stringify(stored));
+            const questions = Array.from(cards).map((card, i) => ({
+                id: i + 1,
+                text: card.querySelector('.q-text').value.trim(),
+                options: [
+                    card.querySelector('.q-opA').value.trim(),
+                    card.querySelector('.q-opB').value.trim(),
+                    card.querySelector('.q-opC').value.trim(),
+                    card.querySelector('.q-opD').value.trim()
+                ],
+                correct: card.querySelector('.q-correct').value,
+                explanation: card.querySelector('.q-exp').value.trim(),
+                marks: Number(card.querySelector('.q-marks').value) || 5
+            }));
 
-        alert('Test saved! Students can now take this exam.');
-        window.location.href = 'teacherhome.html';
-    });
+            const totalMarks = questions.reduce((acc, q) => acc + q.marks, 0);
+            const newExam = {
+                id: Date.now(),
+                title: document.getElementById('examTitle').value.trim(),
+                classGrade: document.getElementById('examClass').value,
+                subject: document.getElementById('examSubject').value.trim(),
+                durationMinutes: Number(document.getElementById('examDuration').value) || 30,
+                totalMarks: totalMarks,
+                passingMarks: Math.round(totalMarks * 0.4),
+                questions: questions
+            };
 
-    // Add initial question
-    addQuestionBtn.click();
-</script>
+            // Save to custom tests list
+            const custom = JSON.parse(localStorage.getItem('smartexam_custom_tests') || '[]');
+            custom.push(newExam);
+            localStorage.setItem('smartexam_custom_tests', JSON.stringify(custom));
+
+            // Also push to curriculum in memory
+            CURRICULUM_DATA.push(newExam);
+
+            alert("Exam published successfully! Students can now take this examination.");
+            window.location.href = "teacherhome.html";
+        }
+
+        // Start with 1 blank question
+        addBlankQuestion();
+    </script>
 </body>
 </html>

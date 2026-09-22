@@ -1,329 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Dashboard</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        :root {
-            --bg: #0b1220;
-            --panel: rgba(255, 255, 255, 0.08);
-            --panel-border: rgba(255, 255, 255, 0.16);
-            --text: #ebf2ff;
-            --muted: rgba(235, 242, 255, 0.7);
-            --primary: #0d6efd;
-            --primary-2: #6610f2;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
-                linear-gradient(180deg, #081427 0%, #060a11 100%);
-            color: var(--text);
-        }
-
-        header {
-            padding: 18px 24px;
+        .class-selector-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            background: rgba(7, 11, 23, 0.6);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .logo .brand {
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .avatar {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: rgba(255, 255, 255, 0.22);
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1.25rem;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
-
-        .profile-info strong {
-            font-weight: 700;
-        }
-
-        .profile-info span {
-            font-size: 0.85rem;
-            color: var(--muted);
-        }
-
-        .nav a {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            text-decoration: none;
-            color: var(--muted);
-            font-weight: 600;
-            transition: background 0.18s ease, color 0.18s ease;
-        }
-
-        .nav a.active,
-        .nav a:hover {
-            background: rgba(255, 255, 255, 0.14);
-            color: var(--text);
-        }
-
-        .main {
-            padding: 32px 24px 48px;
-            max-width: 1180px;
-            margin: 0 auto;
-        }
-
-        .welcome {
-            display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: center;
+            gap: 16px;
+            padding: 1.25rem 1.75rem;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
         }
-
-        .welcome h1 {
-            margin: 0;
-            font-size: 2.2rem;
-        }
-
-        .welcome p {
-            margin: 6px 0 0;
-            color: var(--muted);
-            max-width: 520px;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 22px;
-            margin-top: 32px;
-        }
-
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 18px 56px rgba(0, 0, 0, 0.32);
-            backdrop-filter: blur(14px);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            min-height: 220px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.25), transparent 55%);
-            opacity: 0.35;
-            pointer-events: none;
-        }
-
-        .card h3 {
-            margin: 0;
-            font-size: 1.25rem;
-            z-index: 1;
-        }
-
-        .card p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.6;
-            z-index: 1;
-        }
-
-        .card a {
-            margin-top: auto;
-            z-index: 1;
-            align-self: flex-start;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .card a .icon {
-            width: 36px;
-            height: 36px;
-            display: grid;
-            place-items: center;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .card a:hover {
-            color: #ffffff;
-        }
-
-        .cta {
-            margin-top: 40px;
-            padding: 22px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 18px;
-        }
-
-        .cta p {
-            margin: 0;
-            max-width: 600px;
-            color: rgba(235, 242, 255, 0.8);
-        }
-
-        .cta a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 18px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            border-radius: 999px;
-            color: white;
-            font-weight: 700;
-            text-decoration: none;
-            box-shadow: 0 18px 36px rgba(9, 101, 212, 0.35);
-        }
-
-        @media (max-width: 720px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 14px;
-            }
-
-            .welcome {
-                text-align: left;
-            }
+        .ai-quiz-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(236, 72, 153, 0.12));
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin-bottom: 2.5rem;
         }
     </style>
-    <link rel="stylesheet" href="../common/theme.css" />
-    <script src="../common/theme.js" defer></script>
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <div class="brand">SmartExam</div>
-        <span class="muted">Student Dashboard</span>
-    </div>
-
-   
-
-    <nav class="nav" aria-label="Primary">
-        <a href="studentaccount.html"><i class="fa-solid fa-user"></i> Account</a>
-        <a href="result.html"><i class="fa-solid fa-chart-line"></i> Results</a>
-        <a href="student assinement.html"><i class="fa-solid fa-folder-open"></i> Assignment</a>
-        <a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
-    </nav>
-</header>
-
-<main class="main">
-    <section class="welcome">
-        <div>
-            <h1>Welcome back, Student!</h1>
-            <p>Choose an option below to start your next exam, check your performance, or manage your profile.</p>
+    <header class="app-header">
+        <div class="brand-group">
+            <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div>
+                <div class="brand-title">SmartExam</div>
+                <div class="brand-subtitle">Student Learning & Examination Portal</div>
+            </div>
         </div>
-        
-    </section>
+        <nav class="nav-links">
+            <a href="givetest.html" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> Take Test</a>
+            <a href="result.html" class="nav-link"><i class="fa-solid fa-award"></i> Results & Certificates</a>
+            <a href="leaderboard.html" class="nav-link"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+            <a href="studentassignment.html" class="nav-link"><i class="fa-solid fa-file-arrow-up"></i> Assignments</a>
+            <a href="studentaccount.html" class="nav-link"><i class="fa-solid fa-circle-user"></i> Account</a>
+            <a href="start.html" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="logout()">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </a>
+        </nav>
+    </header>
 
-    <div class="card-grid">
-        <article class="card" id="test-history">
-            <h3>Test History</h3>
-            <p>Review your past exam attempts, check scores, and revisit your answers to see where you can improve.</p>
-            <a href="testhistory.html"><span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>View history</a>
-        </article>
+    <main class="main-content">
+        <!-- Welcome Banner & Class Switcher -->
+        <div class="class-selector-card">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 800;">Welcome back, <span id="studentDisplay">Student</span>!</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Select your class to view curated examinations and assessments.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="color: var(--text); font-weight: 700;"><i class="fa-solid fa-layer-group"></i> Active Class:</label>
+                <select id="classSelector" class="filter-select" onchange="changeClass(this.value)">
+                    <option value="Class 5">Class 5</option>
+                    <option value="Class 6">Class 6</option>
+                    <option value="Class 7">Class 7</option>
+                    <option value="Class 8">Class 8</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10" selected>Class 10</option>
+                    <option value="Class 11">Class 11</option>
+                    <option value="Class 12">Class 12</option>
+                    <option value="College / CS">College / CS (BCA/B.Tech)</option>
+                </select>
+            </div>
+        </div>
 
-        <article class="card" id="take-test">
-            <h3>Take a test</h3>
-            <p>Start any test created by your teacher and see immediate results.</p>
-            <a href="givetest.html"><span class="icon"><i class="fa-solid fa-pen-to-square"></i></span>Start test</a>
-        </article>
+        <!-- Quick Performance Cards -->
+        <div class="card-grid" style="margin-bottom: 2.5rem;">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Tests Attempted</span>
+                    <i class="fa-solid fa-clipboard-check" style="color: #60a5fa; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2rem; font-weight: 800; margin: 10px 0 4px;" id="statAttempted">0</div>
+                <small style="color: var(--text-muted);">Completed examinations</small>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Average Performance</span>
+                    <i class="fa-solid fa-chart-line" style="color: #34d399; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2rem; font-weight: 800; margin: 10px 0 4px; color: #34d399;" id="statAvg">--%</div>
+                <small style="color: var(--text-muted);">Overall percentage score</small>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Active Class Rank</span>
+                    <i class="fa-solid fa-trophy" style="color: #fbbf24; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2rem; font-weight: 800; margin: 10px 0 4px; color: #fbbf24;" id="statRank">Top 5</div>
+                <small><a href="leaderboard.html" style="color: #fbbf24;">View Leaderboard &rarr;</a></small>
+            </div>
+        </div>
 
-        <article class="card" id="leaderboard">
-            <h3>Leaderboard</h3>
-            <p>See how you rank against other students and track your progress over time.</p>
-            <a href="leaderboard.html"><span class="icon"><i class="fa-solid fa-trophy"></i></span>View leaderboard</a>
-        </article>
+        <!-- AI QUICK PRACTICE QUIZ GENERATOR WIDGET -->
+        <div class="ai-quiz-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+                <div>
+                    <h3 style="font-size: 1.3rem; font-weight: 700; color: #f472b6;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> AI Quick Practice Quiz
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 2px;">
+                        Need quick revision? Enter any topic and AI will generate a 5-question test with explanations immediately!
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                <input type="text" id="aiTopicInput" placeholder="e.g. Photosynthesis, Trigonometry, Laws of Motion, Java OOPs..." style="flex: 1; min-width: 250px;">
+                <button class="btn btn-ai" onclick="startAIQuiz()">
+                    <i class="fa-solid fa-bolt"></i> Generate & Start AI Quiz
+                </button>
+            </div>
+        </div>
 
-        <article class="card" id="results">
-            <h3>Results</h3>
-            <p>Review your recent scores and download certificates for completed assessments.</p>
-            <a href="result.html"><span class="icon"><i class="fa-solid fa-file-lines"></i></span>View results</a>
-        </article>
+        <!-- Available Class Exams Section -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700;">
+                <i class="fa-solid fa-file-pen"></i> Available Test Papers for <span id="activeClassLabel" style="color: var(--primary-light);">Class 10</span>
+            </h2>
+            <a href="givetest.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open Full Exam Portal</a>
+        </div>
 
-        <article class="card" id="assignment">
-            <h3>Assignment</h3>
-            <p>Access your current assignments and submit files before the deadline.</p>
-            <a href="student assinement.html"><span class="icon"><i class="fa-solid fa-upload"></i></span>View assignments</a>
-        </article>
+        <div class="card-grid" id="examGrid">
+            <!-- Dynamically injected exam cards -->
+        </div>
+    </main>
 
-    </div>
+    <script src="js/app.js"></script>
+    <script>
+        let currentClass = localStorage.getItem('smartexam_studentClass') || 'Class 10';
+        const student = getCurrentStudent();
 
-</main>
+        document.getElementById('studentDisplay').textContent = student.name;
+        document.getElementById('classSelector').value = currentClass;
+        document.getElementById('activeClassLabel').textContent = currentClass;
 
-<script>
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        // Clear any session-like data (if you want)
-        // localStorage.removeItem('smartexam_studentName');
-        window.location.href = 'student.html';
-    });
-</script>
+        function changeClass(cls) {
+            currentClass = cls;
+            localStorage.setItem('smartexam_studentClass', cls);
+            document.getElementById('activeClassLabel').textContent = cls;
+            loadExams();
+            showToast(`Switched to ${cls}`, "info");
+        }
 
+        async function loadExams() {
+            const grid = document.getElementById('examGrid');
+            grid.innerHTML = '<div style="padding: 20px; color: var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Loading exams...</div>';
+
+            const exams = await API.getExams(currentClass);
+            if (!exams || exams.length === 0) {
+                grid.innerHTML = '<div class="card" style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No exams found for this class.</div>';
+                return;
+            }
+
+            grid.innerHTML = exams.map(ex => `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-primary">${ex.subject}</span>
+                        <span class="badge badge-accent">${ex.classGrade || currentClass}</span>
+                    </div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 8px;">${ex.title}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+                        <i class="fa-solid fa-clock"></i> ${ex.durationMinutes} Minutes &bull; 
+                        <i class="fa-solid fa-circle-question"></i> ${ex.questions ? ex.questions.length : 4} Questions &bull; 
+                        <i class="fa-solid fa-trophy"></i> Total Marks: ${ex.totalMarks}
+                    </p>
+                    <a href="givetest.html?examId=${ex.id}" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-play"></i> Start Examination
+                    </a>
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const results = API.getLocalResults();
+            document.getElementById('statAttempted').textContent = results.length;
+            if (results.length > 0) {
+                const totalPct = results.reduce((acc, r) => acc + (r.percentage || 0), 0);
+                document.getElementById('statAvg').textContent = Math.round(totalPct / results.length) + "%";
+            }
+        }
+
+        function startAIQuiz() {
+            const topic = document.getElementById('aiTopicInput').value.trim();
+            if (!topic) {
+                showToast("Please enter a topic for the AI Quiz!", "warning");
+                return;
+            }
+            window.location.href = `givetest.html?aiTopic=${encodeURIComponent(topic)}&class=${encodeURIComponent(currentClass)}`;
+        }
+
+        function logout() {
+            window.location.href = 'student.html';
+        }
+
+        loadExams();
+    </script>
 </body>
 </html>

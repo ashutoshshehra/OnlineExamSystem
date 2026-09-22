@@ -1,325 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teacher Dashboard</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-        :root {
-            --bg: #0b1220;
-            --panel: rgba(255, 255, 255, 0.08);
-            --panel-border: rgba(255, 255, 255, 0.16);
-            --text: #ebf2ff;
-            --muted: rgba(235, 242, 255, 0.7);
-            --primary: #0d6efd;
-            --primary-2: #6610f2;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
-                linear-gradient(180deg, #081427 0%, #060a11 100%);
-            color: var(--text);
-        }
-
-        header {
-            padding: 18px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            background: rgba(7, 11, 23, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .brand {
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .avatar {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: rgba(255, 255, 255, 0.22);
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1.25rem;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
-
-        .profile-info strong {
-            font-weight: 700;
-        }
-
-        .profile-info span {
-            font-size: 0.85rem;
-            color: var(--muted);
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .nav a {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            text-decoration: none;
-            color: var(--muted);
-            font-weight: 600;
-            transition: background 0.18s ease, color 0.18s ease;
-        }
-
-        .nav a.active,
-        .nav a:hover {
-            background: rgba(255, 255, 255, 0.14);
-            color: var(--text);
-        }
-
-        main {
-            padding: 32px 24px 48px;
-            max-width: 1180px;
-            margin: 0 auto;
-        }
-
-        .welcome {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .welcome h1 {
-            margin: 0;
-            font-size: 2.2rem;
-        }
-
-        .welcome p {
-            margin: 6px 0 0;
-            color: var(--muted);
-            max-width: 520px;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 22px;
-            margin-top: 32px;
-        }
-
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 18px 56px rgba(0, 0, 0, 0.32);
-            backdrop-filter: blur(14px);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            min-height: 220px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.25), transparent 55%);
-            opacity: 0.35;
-            pointer-events: none;
-        }
-
-        .card h3 {
-            margin: 0;
-            font-size: 1.25rem;
-            z-index: 1;
-        }
-
-        .card p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.6;
-            z-index: 1;
-        }
-
-        .card a {
-            margin-top: auto;
-            z-index: 1;
-            align-self: flex-start;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .card a .icon {
-            width: 36px;
-            height: 36px;
-            display: grid;
-            place-items: center;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .card a:hover {
-            color: #ffffff;
-        }
-
-        .cta {
-            margin-top: 40px;
-            padding: 22px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 18px;
-        }
-
-        .cta p {
-            margin: 0;
-            max-width: 600px;
-            color: rgba(235, 242, 255, 0.8);
-        }
-
-        .cta a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 18px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            border-radius: 999px;
-            color: white;
-            font-weight: 700;
-            text-decoration: none;
-            box-shadow: 0 18px 36px rgba(9, 101, 212, 0.35);
-        }
-
-        @media (max-width: 720px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 14px;
-            }
-
-            .welcome {
-                text-align: left;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="..theme.css" />
-    <script src="theme.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <div class="brand">Teacher Dashboard</div>
-        <span class="muted">Manage your exams and questions</span>
-    </div>
-
-    
-
-    <nav class="nav" aria-label="Primary">
-        <a href="teacher account.html"><i class="fa-solid fa-user"></i> Account</a>
-        <a href="results.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
-        <a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
-    </nav>
-</header>
-
-<main class="main">
-    <section class="welcome">
-        <div>
-            <h1>Welcome back!</h1>
-            <p>Use the tools below to build tests, review student performance, and manage your question banks.</p>
+    <header class="app-header">
+        <div class="brand-group">
+            <div class="brand-logo" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <div>
+                <div class="brand-title">Teacher Dashboard</div>
+                <div class="brand-subtitle">Curriculum Administration & AI Assessment</div>
+            </div>
         </div>
-        <div>
-            <a href="Test.html" class="btn" style="--btn-bg: rgba(255,255,255,0.1);"><i class="fa-solid fa-plus"></i> Create new test</a>
+        <nav class="nav-links">
+            <a href="Test.html" class="btn btn-ai"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Exam Builder</a>
+            <a href="teacherassignment.html" class="nav-link"><i class="fa-solid fa-clipboard-list"></i> Assignments</a>
+            <a href="results.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Analytics & CSV</a>
+            <a href="teacher account.html" class="nav-link"><i class="fa-solid fa-circle-user"></i> Profile</a>
+            <a href="admin.html" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="logout()">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Welcome, <span id="teacherWelcomeName">Dr. Rajesh Sharma</span></h1>
+                <p class="page-desc">Manage examinations, generate curriculum questions with AI, and track student scores across grades.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="openNoticeModal()"><i class="fa-solid fa-bullhorn"></i> Post Notice</button>
+                <a href="Test.html" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Exam</a>
+            </div>
         </div>
-    </section>
 
-    <div class="card-grid">
-        <article class="card">
-            <h3>Build a test</h3>
-            <p>Create a new exam with custom questions and scoring rules.</p>
-            <a href="Test.html"><span class="icon"><i class="fa-solid fa-plus"></i></span>Create</a>
-        </article>
+        <!-- Summary Metric Cards -->
+        <div class="card-grid" style="margin-bottom: 2.5rem;">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Total Exams Ready</span>
+                    <i class="fa-solid fa-file-lines" style="color: #60a5fa; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2.2rem; font-weight: 800; margin: 10px 0 4px;">27+</div>
+                <small style="color: var(--text-muted);">Across Class 5–12 & College</small>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Student Submissions</span>
+                    <i class="fa-solid fa-users" style="color: #34d399; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2.2rem; font-weight: 800; margin: 10px 0 4px;" id="subCount">14</div>
+                <small style="color: var(--text-muted);">Recorded test attempts</small>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">AI Generator State</span>
+                    <i class="fa-solid fa-robot" style="color: #f472b6; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2.2rem; font-weight: 800; margin: 10px 0 4px; color: #f472b6;">Active</div>
+                <small style="color: var(--text-muted);">Instant 1-click test synthesis</small>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Pass Rate</span>
+                    <i class="fa-solid fa-gauge-high" style="color: #fbbf24; font-size: 1.4rem;"></i>
+                </div>
+                <div style="font-size: 2.2rem; font-weight: 800; margin: 10px 0 4px; color: #fbbf24;" id="passRate">85%</div>
+                <small style="color: var(--text-muted);">Average student pass benchmark</small>
+            </div>
+        </div>
 
-      
+        <!-- Quick Access Feature Panels -->
+        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1.25rem;">Management & Assessment Tools</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div style="font-size: 2rem; color: #ec4899; margin-bottom: 12px;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 6px;">AI Question Generator</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px;">
+                    Generate comprehensive curriculum questions with options, correct keys, and explanations for any topic in 1-click.
+                </p>
+                <a href="Test.html" class="btn btn-ai" style="width: 100%;"><i class="fa-solid fa-sparkles"></i> Launch Generator</a>
+            </div>
 
-        <article class="card">
-            <h3>Assignments</h3>
-            <p>Create and publish assignments for your students.</p>
-            <a href="teacherassignment.html"><span class="icon"><i class="fa-solid fa-clipboard-list"></i></span>Manage</a>
-        </article>
+            <div class="card">
+                <div style="font-size: 2rem; color: #3b82f6; margin-bottom: 12px;"><i class="fa-solid fa-clipboard-check"></i></div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 6px;">Assignments & PDF Reviews</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px;">
+                    Publish assignments, view student uploaded PDF files, and mark them as graded with feedback.
+                </p>
+                <a href="teacherassignment.html" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-folder-open"></i> Manage Assignments</a>
+            </div>
 
-        <article class="card">
-            <h3>Completion</h3>
-            <p>See how many students have submitted each assignment.</p>
-            <a href="assinement compliton .html"><span class="icon"><i class="fa-solid fa-check-circle"></i></span>View</a>
-        </article>
+            <div class="card">
+                <div style="font-size: 2rem; color: #10b981; margin-bottom: 12px;"><i class="fa-solid fa-chart-pie"></i></div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 6px;">Analytics & Export</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px;">
+                    Review score performance charts, pinpoint the hardest questions, and export reports in CSV format.
+                </p>
+                <a href="results.html" class="btn btn-secondary" style="width: 100%;"><i class="fa-solid fa-file-csv"></i> View Analytics</a>
+            </div>
+        </div>
 
-        <article class="card">
-            <h3>View results</h3>
-            <p>Review student performance and export detailed score reports.</p>
-            <a href="results.html"><span class="icon"><i class="fa-solid fa-chart-bar"></i></span>Explore</a>
-        </article>
+        <!-- Post Announcement Modal -->
+        <div class="modal-overlay" id="noticeModal">
+            <div class="modal-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                    <h3 style="font-size: 1.3rem;"><i class="fa-solid fa-bullhorn"></i> Post Student Announcement</h3>
+                    <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeNoticeModal()">&times;</button>
+                </div>
+                <form onsubmit="return handlePostNotice(event)">
+                    <div class="form-group">
+                        <label>Announcement Title</label>
+                        <input type="text" name="title" required placeholder="e.g. Mid-Term Examination Schedule">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Class</label>
+                        <select name="targetClass">
+                            <option value="ALL">All Classes (School & College)</option>
+                            <option value="Class 10">Class 10 Only</option>
+                            <option value="Class 12">Class 12 Only</option>
+                            <option value="College / CS">College / CS Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message Content</label>
+                        <textarea name="content" rows="4" required placeholder="Write details here..."></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem;">
+                        <button type="button" class="btn btn-secondary" onclick="closeNoticeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Publish Announcement</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 
-        
-    </div>
+    <script src="js/app.js"></script>
+    <script>
+        const currentTeacher = getTeacher();
+        if (document.getElementById('teacherWelcomeName')) {
+            document.getElementById('teacherWelcomeName').textContent = currentTeacher.name;
+        }
 
-    <div class="cta">
-        <p>Need help getting started? View the documentation or contact support for assistance.</p>
-        <a href="help.html"><i class="fa-solid fa-question-circle"></i> Help center</a>
-    </div>
-</main>
+        function openNoticeModal() { document.getElementById('noticeModal').style.display = 'grid'; }
+        function closeNoticeModal() { document.getElementById('noticeModal').style.display = 'none'; }
+        function logout() { window.location.href = 'admin.html'; }
 
-<script>
-    document.getElementById('logoutBtn').addEventListener('click', (event) => {
-        event.preventDefault();
-        // Redirect to the admin login page (or wherever login is handled)
-        window.location.href = 'admin.html';
-    });
-</script>
-
+        // Update counts from local results
+        const results = API.getLocalResults();
+        if (results.length > 0) {
+            document.getElementById('subCount').textContent = results.length;
+            const passCount = results.filter(r => r.percentage >= 40).length;
+            document.getElementById('passRate').textContent = Math.round((passCount / results.length) * 100) + "%";
+        }
+    </script>
 </body>
 </html>

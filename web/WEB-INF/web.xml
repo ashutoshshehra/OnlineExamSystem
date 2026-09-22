@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <welcome-file-list>
+        <welcome-file>start.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Core Authentication Servlets -->
     <servlet>
         <servlet-name>StudentLoginServlet</servlet-name>
         <servlet-class>StudentLoginServlet</servlet-class>
@@ -9,48 +15,144 @@
         <servlet-class>StudentRegisterServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <servlet-class>AdminLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AdminRegisterServlet</servlet-name>
         <servlet-class>AdminRegisterServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminLoginServlet</servlet-name>
-        <servlet-class>AdminLoginServlet</servlet-class>
+        <servlet-name>UpdateTeacherProfileServlet</servlet-name>
+        <servlet-class>UpdateTeacherProfileServlet</servlet-class>
+    </servlet>
+
+    <!-- Exam & AI Question Servlets -->
+    <servlet>
+        <servlet-name>ExamServlet</servlet-name>
+        <servlet-class>ExamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubmitExamServlet</servlet-name>
+        <servlet-class>SubmitExamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResultServlet</servlet-name>
+        <servlet-class>ResultServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AIQuestionServlet</servlet-name>
+        <servlet-class>AIQuestionServlet</servlet-class>
+    </servlet>
+
+    <!-- Assignment & Announcement Servlets -->
+    <servlet>
+        <servlet-name>AssignmentServlet</servlet-name>
+        <servlet-class>AssignmentServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SubmitAssignmentServlet</servlet-name>
         <servlet-class>SubmitAssignmentServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UpdateTeacherProfileServlet</servlet-name>
-        <servlet-class>UpdateTeacherProfileServlet</servlet-class>
+        <servlet-name>AnnouncementServlet</servlet-name>
+        <servlet-class>AnnouncementServlet</servlet-class>
     </servlet>
+
+    <!-- URL Mappings -->
     <servlet-mapping>
         <servlet-name>StudentLoginServlet</servlet-name>
         <url-pattern>/StudentLoginServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>StudentLoginServlet</servlet-name>
+        <url-pattern>/studentLogin</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>StudentRegisterServlet</servlet-name>
         <url-pattern>/StudentRegisterServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminRegisterServlet</servlet-name>
-        <url-pattern>/AdminRegisterServlet</url-pattern>
+        <servlet-name>StudentRegisterServlet</servlet-name>
+        <url-pattern>/studentRegister</url-pattern>
     </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>AdminLoginServlet</servlet-name>
         <url-pattern>/AdminLoginServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SubmitAssignmentServlet</servlet-name>
-        <url-pattern>/SubmitAssignmentServlet</url-pattern>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <url-pattern>/Login</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AdminRegisterServlet</servlet-name>
+        <url-pattern>/AdminRegisterServlet</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>UpdateTeacherProfileServlet</servlet-name>
         <url-pattern>/UpdateTeacherProfileServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateTeacherProfileServlet</servlet-name>
+        <url-pattern>/UpdateTeacherProfile</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ExamServlet</servlet-name>
+        <url-pattern>/exams</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExamServlet</servlet-name>
+        <url-pattern>/ExamServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SubmitExamServlet</servlet-name>
+        <url-pattern>/submitExam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubmitExamServlet</servlet-name>
+        <url-pattern>/SubmitExamServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ResultServlet</servlet-name>
+        <url-pattern>/resultsApi</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResultServlet</servlet-name>
+        <url-pattern>/ResultServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AIQuestionServlet</servlet-name>
+        <url-pattern>/aiGenerateQuestions</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AssignmentServlet</servlet-name>
+        <url-pattern>/assignments</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SubmitAssignmentServlet</servlet-name>
+        <url-pattern>/submitAssignment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubmitAssignmentServlet</servlet-name>
+        <url-pattern>/SubmitAssignmentServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AnnouncementServlet</servlet-name>
+        <url-pattern>/announcements</url-pattern>
+    </servlet-mapping>
+
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>60</session-timeout>
     </session-config>
 </web-app>

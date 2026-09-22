@@ -1,190 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>SmartExam</title>
-
-<!-- Font Awesome for icons -->
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-
-body{
-    position: relative;
-    background-color: #1a1a1a;
-    color: #f5f5f5;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-}
-
-.page-bg{
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
-        url("https://examonline.in/wp-content/uploads/2023/08/featured1-1536x934.png") no-repeat center/cover;
-    background-attachment: fixed;
-}
-
-/* Header */
-.header{
-    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-    color: #f8f9fa;
-    padding: 24px 20px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-}
-
-.header h1{
-    margin:0;
-    font-size:42px;
-    letter-spacing: 0.5px;
-}
-
-.header p{
-    margin:6px;
-    font-size:18px;
-    opacity: 0.92;
-}
-
-/* Main container */
-.container{
-    margin-top:90px;
-}
-
-/* Buttons */
-.b1{
-    display:inline-block;
-    padding:15px 32px;
-    margin:10px;
-    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-    color:white;
-    text-decoration:none;
-    border-radius:12px;
-    font-size:18px;
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.b1:hover{
-    background: linear-gradient(135deg, #6610f2 0%, #0d6efd 100%);
-    transform: translateY(-2px);
-    box-shadow:0 18px 28px rgba(0,0,0,0.28);
-}
-
-/* About Section */
-.about{
-    margin:120px auto 80px;
-    max-width:900px;
-    background: rgba(255,255,255,0.92);
-    color: #111;
-    padding:40px;
-    border-radius:16px;
-    box-shadow:0 18px 40px rgba(0,0,0,0.25);
-    backdrop-filter: blur(10px);
-    text-align: left;
-}
-
-.about h2{
-    margin-bottom:20px;
-    color: #0b2f5a;
-}
-
-.about .about-grid{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-}
-
-.about .about-text,
-.about .about-features,
-.about .about-illustration{
-    flex: 1 1 320px;
-}
-
-.about .about-illustration img{
-    width: 100%;
-    border-radius: 16px;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.25);
-    object-fit: cover;
-    max-height: 420px;
-}
-
-.about p{
-    margin:0 0 18px;
-    font-size:16px;
-    line-height:1.6;
-}
-
-.about ul{
-    margin:0;
-    font-size:16px;
-    line-height:1.6;
-    padding-left: 1.2rem;
-}
-
-</style>
-    <link rel="stylesheet" href="theme.css" />
-    <script src="theme.js" defer></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartExam - Modern Online Examination & Assessment Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            color: #c4b5fd;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 1.2rem;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto 2.5rem;
+        }
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        .role-card {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            backdrop-filter: var(--backdrop-blur);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .role-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: var(--shadow-lg);
+        }
+        .role-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            margin: 0 auto 1.5rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        .class-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 3rem auto 1rem;
+            max-width: 800px;
+        }
+        .class-pill {
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        .stat-item {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+        .stat-val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- Full-page background image -->
-<div class="page-bg" aria-hidden="true"></div>
+    <header class="app-header">
+        <div class="brand-group">
+            <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div>
+                <div class="brand-title">SmartExam</div>
+                <div class="brand-subtitle">AI-Powered Assessment & Proctoring System</div>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="student.html" class="nav-link"><i class="fa-solid fa-user-graduate"></i> Student Portal</a>
+            <a href="admin.html" class="nav-link"><i class="fa-solid fa-chalkboard-user"></i> Teacher / Admin</a>
+            <a href="help.html" class="nav-link"><i class="fa-solid fa-circle-question"></i> Help Center</a>
+        </nav>
+    </header>
 
-<!-- Project Title -->
-<div class="header">
-<h1>SmartExam</h1>
-<p>Online Examination Portal</p>
-</div>
+    <main class="main-content">
+        <section class="hero">
+            <div class="hero-badge">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Question Generator & Live Proctoring Enabled
+            </div>
+            <h1>Smart, Secure & Fair Online Examinations</h1>
+            <p>
+                From <strong>Class 5 through Class 12 to College & Computer Science</strong>, SmartExam delivers automated grading, anti-cheating proctoring, AI question synthesis, and verifiable performance certificates.
+            </p>
 
-<div class="container">
+            <div class="action-cards">
+                <!-- Student Entry Card -->
+                <div class="role-card">
+                    <div class="role-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h2>Student Portal</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin: 10px 0 24px;">
+                        Access class test papers, take proctored examinations, complete assignments, and download your certificates.
+                    </p>
+                    <a href="student.html" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Enter as Student
+                    </a>
+                </div>
 
-<h2>Select Login Type</h2>
+                <!-- Teacher / Admin Entry Card -->
+                <div class="role-card">
+                    <div class="role-icon" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h2>Teacher & Admin Portal</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin: 10px 0 24px;">
+                        Generate exam questions with AI, schedule assessments, review student submissions, and view visual analytics.
+                    </p>
+                    <a href="admin.html" class="btn btn-ai" style="width: 100%;">
+                        <i class="fa-solid fa-lock"></i> Enter as Teacher / Admin
+                    </a>
+                </div>
+            </div>
 
-<!-- Student Button -->
-<a href="student.html" class="b1">
-<i class="fa-solid fa-user"></i> Student
-</a>
+            <!-- Curriculum Class Pills -->
+            <div style="margin-top: 4rem;">
+                <h3 style="font-size: 1.1rem; color: var(--text-muted); font-weight: 600;">COVERING ALL ACADEMIC GRADES</h3>
+                <div class="class-pills">
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 5</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 6</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 7</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 8</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 9</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 10</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 11</span>
+                    <span class="class-pill"><i class="fa-solid fa-book"></i> Class 12</span>
+                    <span class="class-pill" style="border-color: #8b5cf6; color: #c4b5fd;"><i class="fa-solid fa-code"></i> College / CS</span>
+                </div>
+            </div>
 
-<!-- Admin Button -->
-<a href="admin.html" class="b1">
-<i class="fa-solid fa-user-tie"></i> Admin
-</a>
+            <!-- Portal Statistics -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-val">27+</div>
+                    <div class="stat-lbl">Pre-built Test Papers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">9</div>
+                    <div class="stat-lbl">Academic Classes Covered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">100%</div>
+                    <div class="stat-lbl">Automated Instant Grading</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">Anti-Cheat</div>
+                    <div class="stat-lbl">Tab & Fullscreen Monitor</div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-</div>
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.88rem; border-top: 1px solid var(--panel-border);">
+        SmartExam Portal &bull; Developed with Java Servlets, JDBC, MySQL & Modern Web Technologies
+    </footer>
 
-<!-- About Section -->
-<div class="about">
-<h2>About SmartExam</h2>
-<div class="about-grid">
-    <div class="about-text">
-        <p>
-        SmartExam is a secure, reliable online examination platform built to support
-        modern education workflows. It enables institutions to define, schedule, and
-        deliver assessments while maintaining a structured and consistent user experience.
-        </p>
-        <p>
-        With built-in monitoring, automated grading, and detailed performance reports,
-        SmartExam helps educators reduce administrative overhead and focus on student success.
-        </p>
-    </div>
-    <div class="about-illustration">
-        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80" alt="Student taking an online exam">
-    </div>
-    <div class="about-features">
-        <h3>Key features</h3>
-        <ul>
-            <li>Role-based access for students and administrators</li>
-            <li>Timed exams with secure access controls</li>
-            <li>Automated scoring and exportable insights</li>
-            <li>Responsive UI optimized for all devices</li>
-        </ul>
-    </div>
-</div>
-</div>
-
+    <script src="js/app.js"></script>
 </body>
 </html>

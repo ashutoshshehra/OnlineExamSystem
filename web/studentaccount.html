@@ -1,434 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Account</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-        :root {
-            --bg: #0b1220;
-            --panel: rgba(255, 255, 255, 0.08);
-            --panel-border: rgba(255, 255, 255, 0.16);
-            --text: #ebf2ff;
-            --muted: rgba(235, 242, 255, 0.7);
-            --primary: #0d6efd;
-            --primary-2: #6610f2;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.45), transparent 55%),
-                linear-gradient(180deg, #081427 0%, #060a11 100%);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            padding: 18px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            background: rgba(7, 11, 23, 0.6);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand {
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--muted);
-            font-weight: 600;
-            text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 999px;
-            transition: background 0.18s ease, color 0.18s ease;
-        }
-
-        .back-link:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: var(--text);
-        }
-
-        main {
-            flex: 1;
-            padding: 32px 24px;
-            max-width: 980px;
-            margin: 0 auto;
-        }
-
-        .page-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-
-        .page-title h1 {
-            margin: 0;
-            font-size: 2.1rem;
-        }
-
-        .subtitle {
-            margin: 10px 0 24px;
-            color: var(--muted);
-            max-width: 620px;
-        }
-
-        .profile-panel {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-
-        .profile-card {
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
-            backdrop-filter: blur(14px);
-            position: relative;
-        }
-
-        .avatar-wrap {
-            display: grid;
-            place-items: center;
-            width: 128px;
-            height: 128px;
-            border-radius: 50%;
-            margin: 0 auto 18px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.24);
-            overflow: hidden;
-        }
-
-        .avatar-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar-placeholder {
-            font-size: 3rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .upload-btn {
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: var(--text);
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.18s ease;
-        }
-
-        .upload-btn:hover {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-        .upload-btn input {
-            display: none;
-        }
-
-        .detail-list {
-            display: grid;
-            gap: 14px;
-            margin: 18px 0 0;
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 12px 14px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .detail-label {
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        .detail-value {
-            text-align: right;
-            font-weight: 700;
-        }
-
-        .form-section {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.26);
-            backdrop-filter: blur(14px);
-        }
-
-        .form-section h2 {
-            margin: 0 0 14px;
-            font-size: 1.5rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-        }
-
-        label {
-            display: grid;
-            gap: 8px;
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            background: rgba(255, 255, 255, 0.09);
-            color: var(--text);
-            font-size: 1rem;
-        }
-
-        input:focus,
-        select:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
-            border-color: rgba(13, 110, 253, 0.55);
-        }
-
-        .form-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 12px 18px;
-            border-radius: 999px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-
-        .btn.primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            color: white;
-            box-shadow: 0 14px 30px rgba(9, 101, 212, 0.35);
-        }
-
-        .btn.primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 18px 34px rgba(9, 101, 212, 0.4);
-        }
-
-        .btn.secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        .btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
-        }
-
-        @media (max-width: 860px) {
-            .profile-panel {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 460px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="../common/theme.css" />
-    <script src="../common/theme.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile & Account - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<header>
-    <a href="studenthome.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to dashboard</a>
-    <div class="brand">Student Account</div>
-</header>
-
-<main>
-    <div class="page-title">
-        <div>
-            <h1>My Account</h1>
-            <p class="subtitle">Update your profile details, upload a photo, and manage your login credentials.</p>
+    <header class="app-header">
+        <div class="brand-group">
+            <a href="studenthome.html" class="brand-logo"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <div class="brand-title">Student Profile</div>
+                <div class="brand-subtitle">Manage Account Details & Avatar</div>
+            </div>
         </div>
-    </div>
+        <nav class="nav-links">
+            <a href="studenthome.html" class="btn btn-secondary"><i class="fa-solid fa-house"></i> Dashboard</a>
+        </nav>
+    </header>
 
-    <div class="profile-panel">
-        <section class="profile-card">
-            <div class="avatar-wrap" id="avatarWrap">
-                <div class="avatar-placeholder"><i class="fa-solid fa-user"></i></div>
+    <main class="main-content">
+        <div style="max-width: 650px; margin: 0 auto;">
+            <div class="card">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div id="avatarDisplay" style="width: 90px; height: 90px; border-radius: 50%; background: var(--accent-gradient); display: grid; place-items: center; color: white; font-size: 2.5rem; margin: 0 auto 12px; overflow: hidden; border: 3px solid rgba(255,255,255,0.2);">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h2 id="nameHeading" style="font-size: 1.5rem; font-weight: 700;">Ashutosh Shehra</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;" id="idHeading">Student ID: STU-2026</p>
+                </div>
+
+                <form id="profileForm" onsubmit="saveProfile(event)">
+                    <div class="form-group">
+                        <label>Profile Picture</label>
+                        <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(this)">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="profName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Student ID</label>
+                        <input type="text" id="profId" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Enrolled Class / Academic Level</label>
+                        <select id="profClass" required>
+                            <option value="Class 5">Class 5</option>
+                            <option value="Class 6">Class 6</option>
+                            <option value="Class 7">Class 7</option>
+                            <option value="Class 8">Class 8</option>
+                            <option value="Class 9">Class 9</option>
+                            <option value="Class 10">Class 10</option>
+                            <option value="Class 11">Class 11</option>
+                            <option value="Class 12">Class 12</option>
+                            <option value="College / CS">College / CS (BCA/B.Tech)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="profEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Update Password</label>
+                        <input type="password" id="profPass" placeholder="Leave blank to keep unchanged">
+                    </div>
+
+                    <div style="text-align: right; margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Save Profile Changes</button>
+                    </div>
+                </form>
             </div>
-            <label class="upload-btn">
-                <i class="fa-solid fa-upload"></i>
-                Upload photo
-                <input type="file" accept="image/*" id="avatarInput" />
-            </label>
+        </div>
+    </main>
 
-            <div class="detail-list">
-                <div class="detail-item">
-                    <span class="detail-label">Name</span>
-                    <span class="detail-value" id="detailName">John Doe</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Student ID</span>
-                    <span class="detail-value" id="detailId">2023-001</span>
-                </div>
-              
-            </div>
-        </section>
+    <script src="js/app.js"></script>
+    <script>
+        const student = getCurrentStudent();
 
-        <section class="form-section">
-            <h2>Profile Settings</h2>
-            <form id="accountForm" autocomplete="off">
-                <div class="form-row">
-                    <label>
-                        Full name
-                        <input type="text" name="name" value="name" required />
-                    </label>
-                    <label>
-                        Student ID
-                        <input type="text" name="studentId" value="2023-001" required />
-                    </label>
-                </div>
+        document.getElementById('profName').value = student.name || 'Ashutosh Shehra';
+        document.getElementById('profId').value = student.studentId || 'STU-2026';
+        document.getElementById('profClass').value = student.classGrade || 'Class 10';
+        document.getElementById('profEmail').value = student.email || 'student@example.com';
+        document.getElementById('nameHeading').textContent = student.name;
+        document.getElementById('idHeading').textContent = `Student ID: ${student.studentId || 'STU-2026'}`;
 
-                <div class="form-row">
-                    <label>
-                        Email address
-                        <input type="email" name="email" value="you@example.com" required />
-                    </label>
-                </div>
+        if (student.avatar) {
+            document.getElementById('avatarDisplay').innerHTML = `<img src="${student.avatar}" style="width:100%; height:100%; object-fit:cover;">`;
+        }
 
-                <div class="form-row">
-                    <label>
-                        Current password
-                        <input type="password" name="currentPassword" placeholder="••••••••" />
-                    </label>
-                    <label>
-                        New password
-                        <input type="password" name="newPassword" placeholder="••••••••" />
-                    </label>
-                </div>
+        let avatarBase64 = student.avatar || null;
 
-                <div class="form-actions">
-                    <button class="btn primary" type="submit">Save changes</button>
-                    <button class="btn secondary" type="button" id="resetBtn">Reset</button>
-                </div>
-            </form>
-        </section>
-    </div>
-</main>
+        function previewAvatar(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                avatarBase64 = e.target.result;
+                document.getElementById('avatarDisplay').innerHTML = `<img src="${avatarBase64}" style="width:100%; height:100%; object-fit:cover;">`;
+            };
+            reader.readAsDataURL(file);
+        }
 
-<script>
-function getCurrentUser() {
-    const u = localStorage.getItem("smartexam_currentUser");
-    if(!u) { alert("Please login first"); window.location.href="student-login.html"; return null; }
-    return JSON.parse(u);
-}
-function getProfileKey() { return "smartexam_profile_" + getCurrentUser().email; }
-function getProfile() { return JSON.parse(localStorage.getItem(getProfileKey()) || "null"); }
-function saveProfile(profile) { localStorage.setItem(getProfileKey(), JSON.stringify(profile)); }
+        function saveProfile(e) {
+            e.preventDefault();
+            const updated = {
+                name: document.getElementById('profName').value.trim(),
+                studentId: document.getElementById('profId').value.trim(),
+                classGrade: document.getElementById('profClass').value,
+                email: document.getElementById('profEmail').value.trim(),
+                avatar: avatarBase64
+            };
 
-function loadProfile() {
-    const profile = getProfile();
-    if(!profile) return;
-    document.querySelector('input[name="name"]').value = profile.name;
-    document.querySelector('input[name="studentId"]').value = profile.studentId;
-    document.querySelector('input[name="email"]').value = profile.email;
-    document.getElementById("detailName").innerText = profile.name;
-    document.getElementById("detailId").innerText = profile.studentId;
-    document.getElementById("detailEmail").innerText = profile.email;
-
-    const avatarWrap = document.getElementById("avatarWrap");
-    if(profile.avatar) avatarWrap.innerHTML = `<img src="${profile.avatar}">`;
-    else {
-        const initials = profile.name.split(" ").map(n=>n[0]).join("").toUpperCase();
-        avatarWrap.innerHTML = `<div class="avatar-placeholder">${initials}</div>`;
-    }
-}
-
-function initProfile() {
-    const user = getCurrentUser();
-    if(!getProfile()) {
-        const profile = { name:user.name, studentId:"", avatar:null };
-        saveProfile(profile);
-    }
-    loadProfile();
-}
-
-document.getElementById("accountForm").addEventListener("submit", e=>{
-    e.preventDefault();
-    const profile = {
-        name: document.querySelector('input[name="name"]').value,
-        studentId: document.querySelector('input[name="studentId"]').value,
-        
-        avatar: getProfile()?.avatar || null
-    };
-    saveProfile(profile);
-    loadProfile();
-    alert("Profile saved!");
-});
-
-document.getElementById("resetBtn").addEventListener("click", loadProfile);
-
-document.getElementById("avatarInput").addEventListener("change", e=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = ()=>{
-        const profile = getProfile();
-        profile.avatar = reader.result;
-        saveProfile(profile);
-        loadProfile();
-    };
-    reader.readAsDataURL(file);
-});
-
-initProfile();
-</script>
-
-
+            saveCurrentStudent(updated);
+            document.getElementById('nameHeading').textContent = updated.name;
+            document.getElementById('idHeading').textContent = `Student ID: ${updated.studentId}`;
+            showToast("Profile updated successfully!", "success");
+        }
+    </script>
 </body>
 </html>

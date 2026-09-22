@@ -1,60 +1,89 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/studentRegister")
+@WebServlet(name = "StudentRegisterServlet", urlPatterns = {"/StudentRegisterServlet", "/studentRegister"})
 public class StudentRegisterServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        res.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = res.getWriter();
 
-        String name = request.getParameter("name");
-           String studentId= request.getParameter("studentId");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String name = req.getParameter("name");
+        String studentId = req.getParameter("studentId");
+        String classGrade = req.getParameter("classGrade");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        String confirm = req.getParameter("confirm");
 
-        try {
-            // 🔥 DIRECT DATABASE CONNECTION
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        if (name == null || email == null || password == null || name.trim().isEmpty() || email.trim().isEmpty()) {
+            out.println("<script>alert('All required fields must be filled!'); window.location.href='student.html';</script>");
+            return;
+        }
 
-                      Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/exam?useSSL=false&allowPublicKeyRetrieval=true","root","ashu0811");
+        if (studentId == null || studentId.trim().isEmpty()) {
+            studentId = "STU-" + (int)(Math.random() * 9000 + 1000);
+        }
 
-            // 🔍 Debug check
+        if (classGrade == null || classGrade.trim().isEmpty()) {
+            classGrade = "Class 10";
+        }
+
+        if (confirm != null && !password.equals(confirm)) {
+            out.println("<script>alert('Passwords do not match!'); window.location.href='student.html';</script>");
+            return;
+        }
+
+        name = name.trim();
+        email = email.trim();
+        studentId = studentId.trim();
+        classGrade = classGrade.trim();
+        String hashedPassword = PasswordUtil.hashPassword(password);
+
+        try (Connection con = DBConnection.getConnection()) {
             if (con == null) {
-                out.println("<h3 style='color:red;'>❌ Database not connected</h3>");
+                // Offline fallback session
+                HttpSession session = req.getSession();
+                session.setAttribute("studentName", name);
+                session.setAttribute("studentId", studentId);
+                session.setAttribute("studentEmail", email);
+                session.setAttribute("classGrade", classGrade);
+                session.setAttribute("userRole", "STUDENT");
+                res.sendRedirect("studenthome.html");
                 return;
             }
 
-            // 🔥 INSERT QUERY
-            PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO students(name,email,password) VALUES(?,?,?)"
-            );
+            String query = "INSERT INTO students(name, studentId, class_grade, email, password) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(query)) {
+                ps.setString(1, name);
+                ps.setString(2, studentId);
+                ps.setString(3, classGrade);
+                ps.setString(4, email);
+                ps.setString(5, hashedPassword);
 
-            ps.setString(1, name);
-            ps.setString(2, email);
-            ps.setString(3, password);
-
-            int i = ps.executeUpdate();
-
-            if (i > 0) {
-                out.println("<h3 style='color:green;'>✅ Registration Successful</h3>");
-                
-                // redirect after 2 sec
-                response.setHeader("refresh", "2;URL=studenthome.html");
-            } else {
-                out.println("<h3 style='color:red;'>❌ Registration Failed</h3>");
+                int rows = ps.executeUpdate();
+                if (rows > 0) {
+                    HttpSession session = req.getSession();
+                    session.setAttribute("studentName", name);
+                    session.setAttribute("studentId", studentId);
+                    session.setAttribute("studentEmail", email);
+                    session.setAttribute("classGrade", classGrade);
+                    session.setAttribute("userRole", "STUDENT");
+                    res.sendRedirect("studenthome.html");
+                } else {
+                    out.println("<script>alert('Registration failed. Please try again.'); window.location.href='student.html';</script>");
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<h3 style='color:red;'>Error: " + e + "</h3>");
+            out.println("<script>alert('Registration Error: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='student.html';</script>");
         }
     }
 }

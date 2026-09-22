@@ -1,62 +1,76 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/studentLogin")
+@WebServlet(name = "StudentLoginServlet", urlPatterns = {"/StudentLoginServlet", "/studentLogin"})
 public class StudentLoginServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        res.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = res.getWriter();
 
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
 
-        try {
-            // 🔥 DB CONNECTION DIRECTLY HERE
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
+            out.println("<script>alert('Please enter your email and password.'); window.location.href='student.html';</script>");
+            return;
+        }
 
-                      Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/exam?useSSL=false&allowPublicKeyRetrieval=true","root","ashu0811");
+        email = email.trim();
+        password = password.trim();
 
-            // 🔍 Debug
+        try (Connection con = DBConnection.getConnection()) {
             if (con == null) {
-                out.println("<h3 style='color:red;'>❌ Database not connected</h3>");
+                // If DB offline, allow default demo student login
+                if (email.equalsIgnoreCase("student@example.com") && password.equals("student123")) {
+                    HttpSession session = req.getSession();
+                    session.setAttribute("studentName", "Ashutosh Shehra");
+                    session.setAttribute("studentId", "STU-2026");
+                    session.setAttribute("studentEmail", email);
+                    session.setAttribute("classGrade", "Class 10");
+                    session.setAttribute("userRole", "STUDENT");
+                    res.sendRedirect("studenthome.html");
+                    return;
+                }
+                out.println("<script>alert('Database offline and credentials do not match demo student (student@example.com / student123)!'); window.location.href='student.html';</script>");
                 return;
-            } else {
-                out.println("<h3 style='color:green;'>✅ Database Connected</h3>");
             }
 
-            // 🔥 LOGIN QUERY
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT * FROM students WHERE email=? AND password=?"
-            );
+            String query = "SELECT * FROM students WHERE email = ?";
+            try (PreparedStatement ps = con.prepareStatement(query)) {
+                ps.setString(1, email);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String storedPass = rs.getString("password");
+                        if (PasswordUtil.verifyPassword(password, storedPass)) {
+                            HttpSession session = req.getSession();
+                            session.setAttribute("studentName", rs.getString("name"));
+                            session.setAttribute("studentId", rs.getString("studentId"));
+                            session.setAttribute("studentEmail", rs.getString("email"));
+                            String grade = rs.getString("class_grade");
+                            session.setAttribute("classGrade", grade != null ? grade : "Class 10");
+                            session.setAttribute("userRole", "STUDENT");
+                            session.setMaxInactiveInterval(60 * 60);
 
-            ps.setString(1, email);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-
-                HttpSession session = request.getSession();
-                session.setAttribute("studentName", rs.getString("name"));
-
-                // redirect after success
-                response.sendRedirect("studenthome.html");
-
-            } else {
-                out.println("<h3 style='color:red;'>Invalid Login ❌</h3>");
+                            res.sendRedirect("studenthome.html");
+                            return;
+                        }
+                    }
+                    out.println("<script>alert('Invalid Student Email or Password!'); window.location.href='student.html';</script>");
+                }
             }
-
         } catch (Exception e) {
-            e.printStackTrace(); // console me full error
-            out.println("<h3 style='color:red;'>Error: " + e + "</h3>");
+            e.printStackTrace();
+            out.println("<script>alert('Server Error: " + e.getMessage().replace("'", "\\'") + "'); window.location.href='student.html';</script>");
         }
     }
 }

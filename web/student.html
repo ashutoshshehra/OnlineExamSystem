@@ -1,295 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Login / Register</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Vz9PZQF11BtbT5F01FJFiWuggMLjt3E1W3+E3ZwF+V8x+fdCjTBQHn0aczYXMdTa8QBuN0PpbDyXlP6LlXk8Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - SmartExam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        :root {
-            --primary: #0d6efd;
-            --primary-dark: #0b5ed7;
-            --bg: #0d1117;
-            --panel: rgba(255, 255, 255, 0.14);
-            --panel-border: rgba(255, 255, 255, 0.18);
-            --text: #e9ecef;
-            --muted: rgba(233, 236, 239, 0.75);
+        .auth-container {
+            max-width: 480px;
+            margin: 2rem auto;
         }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.55), transparent 55%),
-                linear-gradient(180deg, #07102c 0%, #0a0c12 100%);
-            color: var(--text);
+        .tab-nav {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 32px 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
         }
-
-        .card {
-            width: min(520px, 100%);
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 18px;
-            padding: 32px 28px;
-            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(14px);
-        }
-
-        .card h1 {
-            margin: 0 0 10px;
-            font-size: 1.85rem;
-            letter-spacing: 0.6px;
-        }
-
-        .card p.subtitle {
-            margin: 0 0 26px;
-            color: var(--muted);
-        }
-
-        .sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        .panel {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 18px;
-            padding: 22px;
-        }
-
-        .panel h2 {
-            margin: 0 0 10px;
-            font-size: 1.25rem;
-            color: var(--text);
-        }
-
-        .section-subtitle {
-            margin: 0 0 18px;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        form {
-            display: grid;
-            gap: 16px;
-        }
-
-        label {
-            display: grid;
-            gap: 8px;
-            font-size: 0.92rem;
-            color: var(--muted);
-        }
-
-        input {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-            font-size: 0.98rem;
-        }
-
-        input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.35);
-            border-color: rgba(13, 110, 253, 0.6);
-        }
-
-        .form-actions {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .btn {
-            border: none;
-            border-radius: 999px;
-            padding: 12px 18px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-
-        .btn.primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 14px 28px rgba(9, 101, 212, 0.35);
-        }
-
-        .btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 36px rgba(9, 101, 212, 0.35);
-        }
-
-        .btn.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-        }
-
-        .btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-        .footer {
-            margin-top: 22px;
-            font-size: 0.85rem;
-            color: rgba(233, 236, 239, 0.65);
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
             text-align: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
         }
-
-        .footer a {
-            color: rgba(13, 110, 253, 0.9);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 24px 12px;
-            }
-
-            .card {
-                padding: 26px 18px;
-            }
-
-            .sections {
-                gap: 16px;
-            }
+        .tab-btn.active {
+            color: #ffffff;
+            border-bottom-color: var(--primary-light);
         }
     </style>
-    <link rel="stylesheet" href="theme.css" />
-    <script src="theme.js" defer></script>
 </head>
 <body>
 
-<div class="card" role="main">
-    <h1>Student Portal</h1>
-    <p class="subtitle">Login to continue or register for a new account.</p>    
-    <div class="sections">
-        <section class="panel" id="existing">
-            <h2>Existing student</h2>
-            <p class="section-subtitle">Sign in to access your dashboard.</p>
+    <header class="app-header">
+        <div class="brand-group">
+            <a href="start.html" class="brand-logo"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <div class="brand-title">Student Portal</div>
+                <div class="brand-subtitle">Smart Examination Access</div>
+            </div>
+        </div>
+        <a href="start.html" class="btn btn-secondary"><i class="fa-solid fa-home"></i> Home</a>
+    </header>
 
-            
-           
-        <form id="login" action="StudentLoginServlet" method="post" onsubmit="saveUser()">
-                <label>
-                    Student Email
-                    <input type="email" name="email" placeholder="you@example.com" required />
-                </label>
-                <label>
-                    Password
-                    <input type="password" name="password" placeholder="••••••••" required />
-                </label>
-                <div class="form-actions">
-                    <button class="btn primary" type="submit">Login</button>
-                    <button class="btn secondary" type="button" id="switchToRegister">Create account</button>
+    <main class="main-content">
+        <div class="auth-container">
+            <div class="card">
+                <div class="tab-nav">
+                    <button class="tab-btn active" id="tabLoginBtn" type="button" onclick="switchTab('login')">
+                        <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                    </button>
+                    <button class="tab-btn" id="tabRegisterBtn" type="button" onclick="switchTab('register')">
+                        <i class="fa-solid fa-user-plus"></i> New Student
+                    </button>
                 </div>
-            </form>
-        </section>
 
-        <section class="panel" id="new">
-            <h2>New student</h2>
-            <p class="section-subtitle">Register for a new account.</p>
+                <!-- LOGIN FORM -->
+                <form id="loginForm" onsubmit="return handleStudentAuth(event, 'login')">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-envelope"></i> Student Email</label>
+                        <input type="email" id="loginEmail" required placeholder="student@example.com" value="student@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" value="student123">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <button type="button" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;" onclick="fillDemoStudent()">
+                            <i class="fa-solid fa-key"></i> Auto-Fill Demo
+                        </button>
+                        <span style="font-size: 0.82rem; color: var(--text-muted);">student@example.com / student123</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-arrow-right"></i> Login to Dashboard
+                    </button>
+                </form>
 
-           <form id="register" action="StudentRegisterServlet" method="post">
-                <label>
-                    Full name
-                    <input type="text" name="name" placeholder="Jane Doe" required />
-                </label>
-                <label>
-                    Student ID
-                    <input type="text" name="studentId" placeholder="e.g. 2023-001" required />
-                </label>
-                <label>
-                    Email address
-                    <input type="email" name="email" placeholder="you@example.com" required />
-                </label>
-                <label>
-                    Password
-                    <input type="password" name="password" placeholder="Create a password" required />
-                </label>
-                <label>
-                    Confirm password
-                    <input type="password" name="confirm" placeholder="Confirm password" required />
-                </label>
-                <div class="form-actions">
-                    <button class="btn primary" type="submit">Register</button>
-                    
-                    <button class="btn secondary" type="button" id="switchToLogin">Back to login</button>
-                </div>
-            </form>
-        </section>
-        <p class="subtitle"><a class="btn secondary" href="start.html"> <<< Go Back </a></p>
-    </div>
+                <!-- REGISTRATION FORM -->
+                <form id="registerForm" onsubmit="return handleStudentAuth(event, 'register')" style="display: none;">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-user"></i> Full Name</label>
+                        <input type="text" id="regName" required placeholder="Ashutosh Shehra">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-id-card"></i> Student ID</label>
+                        <input type="text" id="regStudentId" required placeholder="STU-2026" value="STU-2026">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-graduation-cap"></i> Select Class / Grade</label>
+                        <select id="regClass" required>
+                            <option value="Class 5">Class 5</option>
+                            <option value="Class 6">Class 6</option>
+                            <option value="Class 7">Class 7</option>
+                            <option value="Class 8">Class 8</option>
+                            <option value="Class 9">Class 9</option>
+                            <option value="Class 10" selected>Class 10</option>
+                            <option value="Class 11">Class 11</option>
+                            <option value="Class 12">Class 12</option>
+                            <option value="College / CS">College / CS (BCA/B.Tech)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-envelope"></i> Email Address</label>
+                        <input type="email" id="regEmail" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> Password</label>
+                        <input type="password" id="regPass" required placeholder="Create password">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-shield"></i> Confirm Password</label>
+                        <input type="password" id="regConfirm" required placeholder="Re-enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-user-check"></i> Register Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
 
-    <p class="footer">
-        <span>Need help?</span>
-        <a href="#" onclick="alert('Contact your administrator for support'); return false;">Contact support</a>
-    </p>
-</div>
+    <script src="js/app.js"></script>
+    <script>
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabLoginBtn = document.getElementById('tabLoginBtn');
+            const tabRegisterBtn = document.getElementById('tabRegisterBtn');
 
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabLoginBtn.classList.add('active');
+                tabRegisterBtn.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabLoginBtn.classList.remove('active');
+                tabRegisterBtn.classList.add('active');
+            }
+        }
 
-<script>
-
-// 🔥 SAVE CURRENT USER (MOST IMPORTANT)
-
-function saveUser(){
-    const email = document.querySelector('#existing input[name="email"]').value;
-    const name = email.split('@')[0]; // simple default name if you don’t have full name
-    localStorage.setItem("smartexam_currentUser", JSON.stringify({email, name}));
-}
-// 🔁 SWITCH SCROLL
-document.getElementById('switchToRegister').addEventListener('click', () => {
-    document.getElementById('new').scrollIntoView({ behavior: 'smooth' });
-});
-
-document.getElementById('switchToLogin').addEventListener('click', () => {
-    document.getElementById('existing').scrollIntoView({ behavior: 'smooth' });
-});
-
-    document.getElementById('login').addEventListener('submit', e => {
-        e.preventDefault();
-        // Redirect to the student home dashboard after successful login
-        window.location.href = 'studenthome.html';
-    });
-
-  document.getElementById('register').addEventListener('submit', e => {
-    e.preventDefault();
-    const form = e.target;
-    const students = JSON.parse(localStorage.getItem('smartexam_students') || '[]');
-    students.push({
-        name: form.name.value,
-        studentId: form.studentId.value,
-        email: form.email.value,
-        password: form.password.value
-    });
-    localStorage.setItem('smartexam_students', JSON.stringify(students));
-    localStorage.setItem('smartexam_currentUser', JSON.stringify({email: form.email.value, name: form.name.value}));
-    window.location.href = 'studenthome.html';
-});
-</script>
+        function fillDemoStudent() {
+            document.getElementById('loginEmail').value = 'student@example.com';
+            document.getElementById('loginPassword').value = 'student123';
+            showToast("Demo student credentials loaded!", "success");
+        }
+    </script>
 </body>
 </html>
